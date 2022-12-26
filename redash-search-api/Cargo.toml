@@ -1,0 +1,20 @@
+[package]
+name = "redash-search-api"
+
+edition = "2021"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = {version = "1.0.58", features = ["backtrace"]}
+async-trait = "0.1.60"
+config = "0.13.1"
+hyper = {version = "0.14", features = ["full"]}
+reqwest = {version = "0.11", features = ["json"]}
+serde = {version = "1.0.140", features = ["derive"]}
+serde_json = "1.0"
+tokio = {version = "1", features = ["full"]}
+tonic = "0.8.1"
+tracing = "0.1.35"
+tracing-subscriber = {version = "0.3.15", features = ["json", "env-filter"]}
