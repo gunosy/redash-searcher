@@ -9,8 +9,16 @@ pub struct RedashConfig {
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct OpenSearchConfig {
+    pub username: String,
+    pub password: String,
+    pub url: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Configs {
     pub redash: RedashConfig,
+    pub open_search: OpenSearchConfig,
 }
 
 impl Configs {

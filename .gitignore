@@ -161,3 +161,5 @@ dist
 # Added by cargo
 
 /target
+
+.vscode

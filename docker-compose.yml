@@ -4,7 +4,7 @@ services:
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:2.4.1
     environment:
-      OPENSEARCH_HOSTS: "https://opensearch-node-main:9200"
+      OPENSEARCH_HOSTS: "http://opensearch-node-main:9200"
     ports:
       - 5601:5601
     links:
@@ -15,12 +15,6 @@ services:
   opensearch-node-main:
     image: opensearchproject/opensearch:2.4.1
     environment:
-      - cluster.name=loca-cluster
-      - node.name=main
-      - cluster.initial_master_nodes=main
-      - bootstrap.memory_lock=true
-      - http.host=0.0.0.0
-      - transport.host=127.0.0.1
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:

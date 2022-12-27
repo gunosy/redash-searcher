@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use async_trait::async_trait;
 
 use serde::{Deserialize, Serialize};
@@ -38,19 +38,22 @@ pub struct GetQueriesResponse {
     pub results: Vec<RedashQuery>,
 }
 
-// This is a default implementation of RedashClient
-// NOTE: some fields are omitted for simplicity
-//
-// API reference: https:
-// https://redash.io/help/user-guide/integrations-and-api/api
+/// This is a default implementation of RedashClient
+/// NOTE: some fields are omitted for simplicity
+///
+/// API reference: https:
+/// https://redash.io/help/user-guide/integrations-and-api/api
 pub struct DefaultRedashClient {
     base_url: hyper::Uri,
     api_key: String,
 }
 
 impl DefaultRedashClient {
-    pub fn new(base_url: hyper::Uri, api_key: String) -> Self {
-        Self { base_url, api_key }
+    pub fn new(base_url: &str, api_key: &str) -> Result<Self> {
+        Ok(Self {
+            base_url: base_url.parse().context("invalid base url")?,
+            api_key: api_key.to_string(),
+        })
     }
 }
 
