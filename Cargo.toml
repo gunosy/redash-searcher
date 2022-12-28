@@ -1,4 +1,4 @@
 [workspace]
 members = [
-    "redash-search-api",
+    "redash-search-sync",
 ]
