@@ -1,13 +1,8 @@
-use anyhow::Result;
-use hyper::client::conn;
-use opensearch::http::request::JsonBody;
-use opensearch::http::transport::{SingleNodeConnectionPool, Transport, TransportBuilder};
-use opensearch::{BulkParts, OpenSearch};
-use redash_search_api::app::App;
-use redash_search_api::configs::Configs;
-use redash_search_api::redash::{self, RedashClient};
-use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
+use opensearch::http::transport::{SingleNodeConnectionPool, TransportBuilder};
+use opensearch::OpenSearch;
+use redash_search_sync::app::App;
+use redash_search_sync::configs::Configs;
+use redash_search_sync::redash::DefaultRedashClient;
 use tracing::Level;
 
 #[tokio::main]
@@ -22,9 +17,8 @@ async fn main() {
         .init();
 
     let config = &Configs::load_configs().unwrap();
-    let redash_client = Box::new(
-        redash::DefaultRedashClient::new(&config.redash.url, &config.redash.api_key).unwrap(),
-    );
+    let redash_client =
+        Box::new(DefaultRedashClient::new(&config.redash.url, &config.redash.api_key).unwrap());
     let conn_pool = SingleNodeConnectionPool::new((&config.open_search.url).parse().unwrap());
     let transport = TransportBuilder::new(conn_pool)
         .auth(opensearch::auth::Credentials::Basic(

@@ -1,4 +1,4 @@
-use anyhow::{Context, Result};
+use anyhow::Result;
 use async_trait::async_trait;
 
 use serde::{Deserialize, Serialize};
@@ -8,7 +8,7 @@ pub trait RedashClient {
     async fn get_queries(&self, req: GetQueriesRequest) -> Result<GetQueriesResponse>;
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct GetQueriesRequest {
     pub page: u32,
     pub page_size: u32,
@@ -16,7 +16,7 @@ pub struct GetQueriesRequest {
 }
 
 // NOTE: some fields are omitted
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct RedashQuery {
     pub id: i32,
     pub name: String,
@@ -30,7 +30,7 @@ pub struct RedashQuery {
     pub tags: Vec<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct GetQueriesResponse {
     pub count: i32,
     pub page: i32,
@@ -57,7 +57,6 @@ impl DefaultRedashClient {
     }
 }
 
-//
 #[async_trait]
 impl RedashClient for DefaultRedashClient {
     async fn get_queries(&self, req: GetQueriesRequest) -> Result<GetQueriesResponse> {
@@ -68,7 +67,7 @@ impl RedashClient for DefaultRedashClient {
                 self.base_url,
                 req.page,
                 req.page_size,
-                req.order.unwrap_or("-updated_at".to_string())
+                req.order.unwrap_or_else(|| "-updated_at".to_string())
             ))
             .header("Authorization", format!("Key {}", self.api_key));
 

@@ -1,5 +1,5 @@
 [package]
-name = "redash-search-api"
+name = "redash-search-sync"
 
 edition = "2021"
 version = "0.1.0"
