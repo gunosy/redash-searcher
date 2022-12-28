@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.4.1
+    environment:
+      OPENSEARCH_HOSTS: "http://opensearch-node-main:9200"
+    ports:
+      - 5601:5601
+    links:
+      - opensearch-node-main
+    networks:
+      - redash-searcher
+
+  opensearch-node-main:
+    image: opensearchproject/opensearch:2.4.1
+    environment:
+      - cluster.name=local-cluster
+      - node.name=main
+      - cluster.initial_master_nodes=main
+      - bootstrap.memory_lock=true
+      - http.host=0.0.0.0
+      - plugins.security.ssl.http.enabled=false
+      - transport.host=127.0.0.1
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - opensearch-node-main-data:/usr/share/opensearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - redash-searcher
+
+
+volumes:
+  opensearch-node-main-data:
+
+networks:
+  redash-searcher:

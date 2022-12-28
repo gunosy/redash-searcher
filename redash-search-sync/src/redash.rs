@@ -8,7 +8,7 @@ pub trait RedashClient {
     async fn get_queries(&self, req: GetQueriesRequest) -> Result<GetQueriesResponse>;
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct GetQueriesRequest {
     pub page: u32,
     pub page_size: u32,
@@ -16,7 +16,7 @@ pub struct GetQueriesRequest {
 }
 
 // NOTE: some fields are omitted
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct RedashQuery {
     pub id: i32,
     pub name: String,
@@ -30,7 +30,7 @@ pub struct RedashQuery {
     pub tags: Vec<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct GetQueriesResponse {
     pub count: i32,
     pub page: i32,
@@ -38,34 +38,36 @@ pub struct GetQueriesResponse {
     pub results: Vec<RedashQuery>,
 }
 
-// This is a default implementation of RedashClient
-// NOTE: some fields are omitted for simplicity
-//
-// API reference: https:
-// https://redash.io/help/user-guide/integrations-and-api/api
+/// This is a default implementation of RedashClient
+/// NOTE: some fields are omitted for simplicity
+///
+/// API reference: https:
+/// https://redash.io/help/user-guide/integrations-and-api/api
 pub struct DefaultRedashClient {
-    base_url: hyper::Uri,
+    base_url: String,
     api_key: String,
 }
 
 impl DefaultRedashClient {
-    pub fn new(base_url: hyper::Uri, api_key: String) -> Self {
-        Self { base_url, api_key }
+    pub fn new(base_url: &str, api_key: &str) -> Result<Self> {
+        Ok(Self {
+            base_url: base_url.trim_end_matches('/').to_string(),
+            api_key: api_key.to_string(),
+        })
     }
 }
 
-//
 #[async_trait]
 impl RedashClient for DefaultRedashClient {
     async fn get_queries(&self, req: GetQueriesRequest) -> Result<GetQueriesResponse> {
         let client = reqwest::Client::new();
         let req = client
             .get(format!(
-                "{}/queries?page={}&page_size={}&order_by={}",
+                "{}/api/queries?page={}&page_size={}&order_by={}",
                 self.base_url,
                 req.page,
                 req.page_size,
-                req.order.unwrap_or("-updated_at".to_string())
+                req.order.unwrap_or_else(|| "-updated_at".to_string())
             ))
             .header("Authorization", format!("Key {}", self.api_key));
 
