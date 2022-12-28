@@ -2,20 +2,20 @@ use anyhow::{Context, Result};
 use config::{Config, Environment};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 pub struct RedashConfig {
-    pub api_base_url: String,
+    pub url: String,
     pub api_key: String,
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 pub struct OpenSearchConfig {
     pub username: String,
     pub password: String,
     pub url: String,
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 pub struct Configs {
     pub redash: RedashConfig,
     pub open_search: OpenSearchConfig,

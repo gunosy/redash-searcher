@@ -44,14 +44,14 @@ pub struct GetQueriesResponse {
 /// API reference: https:
 /// https://redash.io/help/user-guide/integrations-and-api/api
 pub struct DefaultRedashClient {
-    base_url: hyper::Uri,
+    base_url: String,
     api_key: String,
 }
 
 impl DefaultRedashClient {
     pub fn new(base_url: &str, api_key: &str) -> Result<Self> {
         Ok(Self {
-            base_url: base_url.parse().context("invalid base url")?,
+            base_url: base_url.trim_end_matches('/').to_string(),
             api_key: api_key.to_string(),
         })
     }
@@ -64,7 +64,7 @@ impl RedashClient for DefaultRedashClient {
         let client = reqwest::Client::new();
         let req = client
             .get(format!(
-                "{}/queries?page={}&page_size={}&order_by={}",
+                "{}/api/queries?page={}&page_size={}&order_by={}",
                 self.base_url,
                 req.page,
                 req.page_size,
