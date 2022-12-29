@@ -1,16 +1,16 @@
-import { useSearchkitVariables } from '@searchkit/client'
-import { gql, useQuery } from '@apollo/client'
-import { useState } from 'react'
-import { HitsList, HitsGrid } from './searchkit/Hits'
+import { useQuery, gql } from "@apollo/client";
 import {
-  FacetsList,
-  SearchBar,
-  Pagination,
-  ResetSearchButton,
-  SelectedFilters,
-  SortingSelector
-} from '@searchkit/elastic-ui'
-
+  withSearchkit,
+  useSearchkitVariables,
+  withSearchkitRouting,
+  useSearchkitQueryValue,
+  useSearchkit,
+  FilterLink,
+  PaginationLink,
+} from "@searchkit/client";
+import withApollo from "../hocs/withApollo";
+import { getDataFromTree } from "@apollo/client/react/ssr";
+import { useState } from "react";
 import {
   EuiPage,
   EuiPageBody,
@@ -25,80 +25,74 @@ import {
   EuiHorizontalRule,
   EuiButtonGroup,
   EuiFlexGroup,
-  EuiFlexItem
-} from '@elastic/eui'
+  EuiFlexItem,
+} from "@elastic/eui";
+import exp from "constants";
 
-const query = gql`
-  query resultSet($query: String, $filters: [SKFiltersSet], $page: SKPageInput, $sortBy: String) {
-    results(query: $query, filters: $filters) {
-      summary {
-        total
-        appliedFilters {
-          id
-          identifier
-          display
-          label
-          ... on DateRangeSelectedFilter {
-            dateMin
-            dateMax
-          }
+function SearchBar() {
+  const [query, setQuery] = useSearchkitQueryValue();
+  const api = useSearchkit();
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        api.setQuery(query);
+        api.search();
+      }}
+    >
+      <input
+        type="search"
+        value={query}
+        onChange={(e) => {
+          const value = e.target.value;
+          setQuery(value);
+        }}
+      />
+    </form>
+  );
+}
 
-          ... on NumericRangeSelectedFilter {
-            min
-            max
-          }
-
-          ... on ValueSelectedFilter {
-            value
-          }
-        }
-        sortOptions {
-          id
-          label
-        }
-        query
-      }
-      hits(page: $page, sortBy: $sortBy) {
-        page {
+const App = () => {
+  const query = gql`
+    query resultSet(
+      $query: String
+      $filters: [SKFiltersSet]
+      $page: SKPageInput
+      $sortBy: String
+    ) {
+      results(query: $query, filters: $filters) {
+        summary {
           total
-          totalPages
-          pageNumber
-          from
-          size
         }
-        sortedBy
-        items {
-          ... on ResultHit {
-            id
-            fields {
-              title
-              writers
-              actors
-              plot
-              poster
+        hits(page: $page, sortBy: $sortBy) {
+          page {
+            total
+            totalPages
+            pageNumber
+            from
+            size
+          }
+          sortedBy
+          items {
+            ... on ResultHit {
+              id
+              fields {
+                name
+                query
+                url
+              }
             }
           }
         }
       }
-      facets {
-        identifier
-        type
-        label
-        display
-        entries {
-          label
-          count
-        }
-      }
     }
-  }
-`
-
-const Page = () => {
-  const variables = useSearchkitVariables()
-  const { previousData, data = previousData, loading } = useQuery(query, { variables })
-  const [viewType, setViewType] = useState('list')
-  const Facets = FacetsList([])
+  `;
+  const variables = useSearchkitVariables();
+  const { previousData, data = previousData } = useQuery(query, {
+    variables,
+  });
+  const [viewType, setViewType] = useState("list");
+  const Facets = FacetsList([]);
   return (
     <EuiPage>
       <EuiPageSideBar>
@@ -130,27 +124,31 @@ const Page = () => {
                   <SortingSelector data={data?.results} loading={loading} />
                 </EuiFlexItem>
                 <EuiFlexItem grow={2}>
-                <EuiButtonGroup
-                  legend=""
-                  options={[
-                    {
-                      id: `grid`,
-                      label: 'Grid'
-                    },
-                    {
-                      id: `list`,
-                      label: 'List'
-                    }
-                  ]}
-                  idSelected={viewType}
-                  onChange={(id) => setViewType(id)}
-                />
+                  <EuiButtonGroup
+                    legend=""
+                    options={[
+                      {
+                        id: `grid`,
+                        label: "Grid",
+                      },
+                      {
+                        id: `list`,
+                        label: "List",
+                      },
+                    ]}
+                    idSelected={viewType}
+                    onChange={(id) => setViewType(id)}
+                  />
                 </EuiFlexItem>
               </EuiFlexGroup>
             </EuiPageContentHeaderSection>
           </EuiPageContentHeader>
           <EuiPageContentBody>
-            {viewType === 'grid' ? <HitsGrid data={data} /> : <HitsList data={data} />}
+            {viewType === "grid" ? (
+              <HitsGrid data={data} />
+            ) : (
+              <HitsList data={data} />
+            )}
             <EuiFlexGroup justifyContent="spaceAround">
               <Pagination data={data?.results} />
             </EuiFlexGroup>
@@ -158,7 +156,7 @@ const Page = () => {
         </EuiPageContent>
       </EuiPageBody>
     </EuiPage>
-  )
-}
+  );
+};
 
-export default Page
+export default App;
