@@ -1,5 +1,5 @@
 import { ApolloServer, gql } from "apollo-server-micro";
-import cors from "micro-cors";
+import Cors from "micro-cors";
 
 import {
   MultiMatchQuery,
@@ -29,8 +29,8 @@ const searchkitConfig = {
   query: new MultiMatchQuery({ fields: ["name", "query"] }),
   facets: [
     new RefinementSelectFacet({
-      field: "tags",
-      identifier: "type",
+      field: "tags.keyword",
+      identifier: "tags",
       label: "Tag",
       multipleSelect: true,
     }),
@@ -74,14 +74,20 @@ const server = new ApolloServer({
   ],
   resolvers: withSearchkitResolvers({}),
   introspection: true,
-  playground: true,
   context: {
     ...context,
   },
 });
 
-const handler = server.createHandler({ path: "/api/graphql" });
+const startServer = server.start();
+const cors = Cors();
 
-export default cors()((req, res) =>
-  req.method === "OPTIONS" ? res.end() : handler(req, res)
-);
+export default cors(async (req: any, res: any): Promise<false | undefined> => {
+  if (req.method === "OPTIONS") {
+    res.end();
+    return false;
+  }
+
+  await startServer;
+  await server.createHandler({ path: "/api/graphql" })(req, res);
+});

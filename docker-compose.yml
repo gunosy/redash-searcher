@@ -20,7 +20,7 @@ services:
       - cluster.initial_master_nodes=main
       - bootstrap.memory_lock=true
       - http.host=0.0.0.0
-      - plugins.security.ssl.http.enabled=false
+      - plugins.security.disabled=true
       - transport.host=127.0.0.1
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:

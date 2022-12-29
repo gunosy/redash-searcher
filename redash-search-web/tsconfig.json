@@ -15,6 +15,13 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "jsxImportSource": "@emotion/react",
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/Search.tsx",
+    "components/searchkit/Hits.jsx"
+  ],
   "exclude": ["node_modules"]
 }
