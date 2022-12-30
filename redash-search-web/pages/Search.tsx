@@ -8,9 +8,9 @@ import {
   FacetsList,
   SearchBar,
   Pagination,
-  ResetSearchButton,
   SelectedFilters,
   SortingSelector,
+  ResetSearchButton,
 } from "@searchkit/elastic-ui";
 import { useEffect, useState } from "react";
 import {
@@ -24,6 +24,10 @@ import {
   EuiFlexItem,
   EuiPageTemplate,
   EuiSearchBar,
+  EuiHeader,
+  EuiHeaderSection,
+  EuiPageSection,
+  EuiSpacer,
 } from "@elastic/eui";
 import { initializeApollo } from "../lib/apolloClient";
 import HitsList from "../components/HitList";
@@ -39,6 +43,30 @@ export const RESULT_SET_QUERY = gql`
     results(query: $query, filters: $filters) {
       summary {
         total
+        appliedFilters {
+          id
+          identifier
+          display
+          label
+          ... on DateRangeSelectedFilter {
+            dateMin
+            dateMax
+          }
+
+          ... on NumericRangeSelectedFilter {
+            min
+            max
+          }
+
+          ... on ValueSelectedFilter {
+            value
+          }
+        }
+        sortOptions {
+          id
+          label
+        }
+        query
       }
       hits(page: $page, sortBy: $sortBy) {
         page {
@@ -56,6 +84,10 @@ export const RESULT_SET_QUERY = gql`
               name
               query
               url
+            }
+            highlight {
+              name
+              query
             }
           }
         }
@@ -76,52 +108,56 @@ export const RESULT_SET_QUERY = gql`
 
 const Search = () => {
   const variables = useSearchkitVariables();
-  const { data, loading } = useQuery(RESULT_SET_QUERY, { variables });
+  const [loadResultSet, { called, loading, data }] = useLazyQuery(
+    RESULT_SET_QUERY,
+    {
+      variables,
+    }
+  );
+  useEffect(() => {
+    loadResultSet();
+  }, []);
+  if (loading) {
+    return <div></div>;
+  }
   const Facets = FacetsList([]);
   return (
-    <EuiPageTemplate>
+    <EuiPageTemplate panelled={true}>
       <EuiPageTemplate.Sidebar>
         <SearchBar loading={loading} />
-        <EuiHorizontalRule margin="m" />
+        <EuiHorizontalRule margin="l" />
         <Facets data={data?.results || { facets: [] }} loading={loading} />
       </EuiPageTemplate.Sidebar>
-      <EuiPageBody component="div">
-        <EuiPageTemplate.Header>
-          {/* <EuiPageHeaderSection>
-            <EuiTitle size="l">
-              <SelectedFilters data={data?.results} loading={loading} />
-            </EuiTitle>
-          </EuiPageHeaderSection> */}
-          <EuiPageHeaderSection>
-            <ResetSearchButton loading={loading} />
-          </EuiPageHeaderSection>
-        </EuiPageTemplate.Header>
-        <EuiPageTemplate.Section>
-          <EuiTitle size="s">
-            <h2>{data?.results.summary.total} Results</h2>
+      <EuiPageTemplate.Header>
+        <EuiPageHeaderSection>
+          <EuiTitle size="l">
+            <h1>Redash Search</h1>
           </EuiTitle>
-        </EuiPageTemplate.Section>
+        </EuiPageHeaderSection>
+        <EuiPageHeaderSection>
+          <ResetSearchButton loading={loading} />
+        </EuiPageHeaderSection>
+      </EuiPageTemplate.Header>
+      <EuiPageTemplate.Section>
+        <EuiTitle size="s">
+          <h2>{data?.results.summary.total} Results</h2>
+        </EuiTitle>
+        <EuiSpacer size="m" />
+        <EuiTitle size="s">
+          <SelectedFilters
+            data={data?.results || { filters: [] }}
+            loading={loading}
+          />
+        </EuiTitle>
+      </EuiPageTemplate.Section>
+      <EuiPageTemplate.Section>
         <HitsList hitItems={data?.results.hits.items || []} />
         <EuiFlexGroup justifyContent="spaceAround">
           <Pagination data={data?.results} />
         </EuiFlexGroup>
-      </EuiPageBody>
+      </EuiPageTemplate.Section>
     </EuiPageTemplate>
   );
 };
 
 export default Search;
-
-export async function getStaticProps() {
-  const apolloClient = initializeApollo();
-  const variables = useSearchkitVariables();
-  await apolloClient.query({
-    query: RESULT_SET_QUERY,
-    variables,
-  });
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-    },
-  };
-}

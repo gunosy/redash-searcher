@@ -4,11 +4,9 @@ import {
   withSearchkit,
   withSearchkitRouting,
 } from "@searchkit/client";
-import { initializeApollo } from "../lib/apolloClient";
-import { RESULT_SET_QUERY } from "./Search";
 
 const Search = dynamic(() => import("./Search"), {
-  ssr: true,
+  ssr: false,
 });
 
 export default withSearchkit(

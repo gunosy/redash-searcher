@@ -6,8 +6,13 @@ import {
   EuiFlexGroup,
   EuiTitle,
   EuiText,
+  EuiSpacer,
+  EuiButtonEmpty,
+  EuiButton,
+  EuiLink,
 } from "@elastic/eui";
 import { IResultHitItem } from "../pages/api/models";
+import { HighlightedQuery } from "./HighlightedQuery";
 
 export interface HitListProps {
   hitItems: IResultHitItem[];
@@ -15,23 +20,25 @@ export interface HitListProps {
 
 const HitsList: React.FC<HitListProps> = ({ hitItems }) => {
   return (
-    <EuiFlexGrid>
+    <EuiFlexGrid gutterSize="xl">
       {hitItems.map((hit) => (
-        <EuiFlexItem key={hit.id}>
-          <EuiFlexGroup gutterSize="xl">
-            <EuiFlexItem>
-              <EuiFlexGroup>
-                <EuiFlexItem grow={6}>
-                  <EuiTitle size="xs">
-                    <h6>{hit.fields.name}</h6>
-                  </EuiTitle>
-                  <EuiText grow={false}>
-                    <p>{hit.fields.query}</p>
-                  </EuiText>
-                </EuiFlexItem>
-              </EuiFlexGroup>
-            </EuiFlexItem>
-          </EuiFlexGroup>
+        <EuiFlexItem key={hit.id} grow={false}>
+          <EuiCard
+            layout="horizontal"
+            title={hit.fields.name}
+            href={hit.fields.url}
+          >
+            {hit.highlight.query && (
+              <>
+                <EuiSpacer />
+                <HighlightedQuery
+                  query={hit.highlight.query
+                    .reduce((acc, cur) => acc + "\n...\n" + cur)
+                    .replaceAll("\n", "<br/>")}
+                />
+              </>
+            )}
+          </EuiCard>
         </EuiFlexItem>
       ))}
     </EuiFlexGrid>
