@@ -1,37 +1,22 @@
-import { useQuery, gql, useLazyQuery } from "@apollo/client";
-import {
-  useSearchkit,
-  useSearchkitQueryValue,
-  useSearchkitVariables,
-} from "@searchkit/client";
+import { gql, useLazyQuery } from "@apollo/client";
+import { useSearchkitVariables } from "@searchkit/client";
 import {
   FacetsList,
   SearchBar,
   Pagination,
   SelectedFilters,
-  SortingSelector,
   ResetSearchButton,
 } from "@searchkit/elastic-ui";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
-  EuiPage,
-  EuiPageBody,
   EuiPageHeaderSection,
   EuiTitle,
   EuiHorizontalRule,
-  EuiButtonGroup,
   EuiFlexGroup,
-  EuiFlexItem,
   EuiPageTemplate,
-  EuiSearchBar,
-  EuiHeader,
-  EuiHeaderSection,
-  EuiPageSection,
   EuiSpacer,
 } from "@elastic/eui";
-import { initializeApollo } from "../lib/apolloClient";
 import HitsList from "../components/HitList";
-import { EXPORT_MARKER } from "next/dist/shared/lib/constants";
 
 export const RESULT_SET_QUERY = gql`
   query resultSet(
@@ -82,8 +67,15 @@ export const RESULT_SET_QUERY = gql`
             id
             fields {
               name
+              description
               query
-              url
+              user_name
+              user_email
+              tags
+              created_at
+              updated_at
+              data_source_name
+              data_source_type
             }
             highlight {
               name

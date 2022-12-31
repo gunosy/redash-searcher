@@ -8,7 +8,7 @@ use tracing::Level;
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt()
-        .with_max_level(Level::INFO)
+        .with_max_level(Level::DEBUG)
         .with_level(true)
         .with_target(true)
         .with_thread_ids(true)

@@ -1,24 +1,73 @@
 use anyhow::Result;
+use chrono::{DateTime, Local};
+use once_cell::sync::Lazy;
 use opensearch::BulkParts;
 use opensearch::{http::request::JsonBody, OpenSearch};
 use serde::{Deserialize, Serialize};
-use serde_json::json;
+use serde_json::{json, Value};
 
 use crate::configs::Configs;
 use crate::redash::{self, RedashClient};
 
 const REDASH_INDEX_NAME: &str = "redash";
 
+static INDEX_CONFIG: Lazy<Value> = Lazy::new(|| {
+    json!({
+        "settings": {
+            "analysis": {
+                "analyzer": {
+                    "sql_analyzer": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "filter": [
+                            "lowercase"
+                        ],
+                        "char_filter": [
+                          "sql_char_filter"
+                        ]
+                    }
+                },
+                "char_filter": {
+                    "sql_char_filter": {
+                        "type": "pattern_replace",
+                        "pattern": "[\\.]",
+                        "replacement": " "
+                    }
+                }
+            }
+        },
+        "mappings": {
+            "properties": {
+                "query": {
+                    "type": "text",
+                    "analyzer": "sql_analyzer"
+                },
+                "created_at": {
+                    "type": "date",
+                    "format": "date_time"
+                },
+                "updated_at": {
+                    "type": "date",
+                    "format": "date_time"
+                },
+            }
+        }
+    })
+});
+
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 struct RedashDocument {
     id: i32,
     name: String,
     query: String,
-    updated_at: String,
-    created_at: String,
+    user_name: String,
+    user_email: String,
+    created_at: DateTime<Local>,
+    updated_at: DateTime<Local>,
     data_source_id: i32,
+    data_source_name: String,
+    data_source_type: String,
     tags: Vec<String>,
-    url: String,
 }
 
 pub struct App {
@@ -62,42 +111,9 @@ impl App {
                 .create(opensearch::indices::IndicesCreateParts::Index(
                     REDASH_INDEX_NAME,
                 ))
-                .body(json!({
-                    "settings": {
-                        "analysis": {
-                            "analyzer": {
-                                "sql_analyzer": {
-                                    "type": "custom",
-                                    "tokenizer": "standard",
-                                    "filter": [
-                                        "lowercase"
-                                    ],
-                                    "char_filter": [
-                                      "sql_char_filter"
-                                    ]
-                                }
-                            },
-                            "char_filter": {
-                                "sql_char_filter": {
-                                    "type": "pattern_replace",
-                                    "pattern": "[\\._]",
-                                    "replacement": " "
-                                }
-                            }
-                        }
-                    },
-                    "mappings": {
-                        "properties": {
-                            "query": {
-                                "type": "text",
-                                "analyzer": "sql_analyzer"
-                            }
-                        }
-                    }
-                }))
+                .body(INDEX_CONFIG.clone())
                 .send()
                 .await?;
-
             if !res.status_code().is_success() {
                 tracing::error!(
                     response = res.text().await.unwrap(),
@@ -113,6 +129,7 @@ impl App {
 
     // TODO: sync only updated queries
     pub async fn sync(&self) -> Result<()> {
+        let data_sources = self.redash_client.get_data_sources().await?;
         let res = self
             .redash_client
             .get_queries(redash::GetQueriesRequest {
@@ -123,15 +140,19 @@ impl App {
             .await?;
         let mut body: Vec<JsonBody<_>> = Vec::new();
         for query in res.results {
+            let data_source = data_sources.get(&query.data_source_id).unwrap();
             let doc = RedashDocument {
                 id: query.id,
                 name: query.name,
                 query: query.query,
-                updated_at: query.updated_at,
+                user_name: query.user.name,
+                user_email: query.user.email,
                 created_at: query.created_at,
+                updated_at: query.updated_at,
                 data_source_id: query.data_source_id,
+                data_source_name: data_source.name.clone(),
+                data_source_type: data_source.r#type.clone(),
                 tags: query.tags,
-                url: format!("{}/queries/{}", self.configs.redash.url, query.id),
             };
             body.push(
                 json!({
