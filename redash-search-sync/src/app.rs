@@ -1,4 +1,6 @@
-use anyhow::Result;
+use std::collections::HashMap;
+
+use anyhow::{anyhow, Result};
 use chrono::{DateTime, Local};
 use once_cell::sync::Lazy;
 use opensearch::BulkParts;
@@ -6,8 +8,7 @@ use opensearch::{http::request::JsonBody, OpenSearch};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
-use crate::configs::Configs;
-use crate::redash::{self, RedashClient};
+use crate::redash::{self, RedashClient, RedashDataSource};
 
 const REDASH_INDEX_NAME: &str = "redash";
 
@@ -73,19 +74,13 @@ struct RedashDocument {
 pub struct App {
     redash_client: Box<dyn RedashClient>,
     open_search_client: OpenSearch,
-    configs: Configs,
 }
 
 impl App {
-    pub fn new(
-        redash_client: Box<dyn RedashClient>,
-        open_search_client: OpenSearch,
-        configs: Configs,
-    ) -> Self {
+    pub fn new(redash_client: Box<dyn RedashClient>, open_search_client: OpenSearch) -> Self {
         Self {
             redash_client,
             open_search_client,
-            configs,
         }
     }
     pub async fn create_redash_index_if_not_exists(&self) -> Result<()> {
@@ -127,18 +122,55 @@ impl App {
         Ok(())
     }
 
-    // TODO: sync only updated queries
-    pub async fn sync(&self) -> Result<()> {
-        let data_sources = self.redash_client.get_data_sources().await?;
+    async fn get_oldest_updated_at(&self) -> Result<DateTime<Local>> {
+        let res = self
+            .open_search_client
+            .search(opensearch::SearchParts::Index(&[REDASH_INDEX_NAME]))
+            .body(json!({
+                "size": 1,
+                "sort": [
+                    {
+                        "updated_at": {
+                            "order": "asc"
+                        }
+                    }
+                ]
+            }))
+            .send()
+            .await?;
+        if !res.status_code().is_success() {
+            tracing::error!(
+                response = res.text().await.unwrap(),
+                "failed to get oldest updated_at"
+            );
+            Err(anyhow!("failed to get oldest updated_at"))
+        } else {
+            let res: Value = res.json().await?;
+            let hits = res["hits"]["hits"].as_array().unwrap();
+            if hits.is_empty() {
+                Ok(DateTime::<Local>::MIN_UTC.into())
+            } else {
+                let updated_at = hits[0]["_source"]["updated_at"].as_str().unwrap();
+                Ok(DateTime::parse_from_rfc3339(updated_at).unwrap().into())
+            }
+        }
+    }
+
+    pub async fn sync_once(
+        &self,
+        page_num: u32,
+        data_sources: &HashMap<i32, RedashDataSource>,
+    ) -> Result<DateTime<Local>> {
         let res = self
             .redash_client
             .get_queries(redash::GetQueriesRequest {
-                page: 1,
-                page_size: 10,
-                order: None,
+                page: page_num,
+                page_size: 100,
+                order: Some("-updated_at".to_string()),
             })
             .await?;
         let mut body: Vec<JsonBody<_>> = Vec::new();
+        let mut oldest_updated_at = DateTime::<Local>::MIN_UTC;
         for query in res.results {
             let data_source = data_sources.get(&query.data_source_id).unwrap();
             let doc = RedashDocument {
@@ -163,8 +195,8 @@ impl App {
                 .into(),
             );
             body.push(serde_json::to_value(&doc).unwrap().into());
+            oldest_updated_at = oldest_updated_at.min(query.updated_at.into());
         }
-
         let res = self
             .open_search_client
             .bulk(BulkParts::Index(REDASH_INDEX_NAME))
@@ -177,9 +209,31 @@ impl App {
                 response = res.text().await.unwrap(),
                 "failed to bulk create"
             );
-            panic!("failed to bulk index")
+            Err(anyhow!("failed to bulk create"))
         } else {
-            tracing::info!(response = res.text().await.unwrap(), "bulk create success");
+            tracing::debug!(response = res.text().await.unwrap(), "bulk create success");
+            Ok(oldest_updated_at.into())
+        }
+    }
+
+    pub async fn sync(&self) -> Result<()> {
+        let data_sources = self.redash_client.get_data_sources().await?;
+        let oldest_updated_at = self.get_oldest_updated_at().await?;
+        tracing::info!(oldest_updated_at = ?oldest_updated_at, "update queries to this time");
+
+        let mut page_num = 1;
+        loop {
+            tracing::info!(page_num, "sync page");
+            let updated_at = self.sync_once(page_num, &data_sources).await?;
+            tracing::info!(updated_at = ?updated_at, "sync page done");
+            if updated_at <= oldest_updated_at {
+                break;
+            }
+            if page_num > 1000 {
+                tracing::warn!("too many pages");
+                break;
+            }
+            page_num += 1;
         }
         Ok(())
     }

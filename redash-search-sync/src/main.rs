@@ -8,7 +8,7 @@ use tracing::Level;
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt()
-        .with_max_level(Level::DEBUG)
+        .with_max_level(Level::INFO)
         .with_level(true)
         .with_target(true)
         .with_thread_ids(true)
@@ -29,7 +29,7 @@ async fn main() {
         .expect("failed to build transport");
     let client = OpenSearch::new(transport);
 
-    let app = App::new(redash_client, client, config.clone());
+    let app = App::new(redash_client, client);
     app.create_redash_index_if_not_exists().await.unwrap();
     app.sync().await.unwrap();
 }
