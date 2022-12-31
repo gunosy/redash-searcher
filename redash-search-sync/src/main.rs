@@ -31,5 +31,9 @@ async fn main() {
 
     let app = App::new(redash_client, client);
     app.create_redash_index_if_not_exists().await.unwrap();
-    app.sync().await.unwrap();
+    loop {
+        tracing::info!("start sync");
+        app.sync().await.unwrap();
+        tokio::time::sleep(std::time::Duration::from_secs(60)).await;
+    }
 }
