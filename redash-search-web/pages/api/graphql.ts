@@ -7,7 +7,7 @@ import {
   SearchkitSchema,
 } from "@searchkit/schema";
 
-const searchkitConfig = {
+const searchkitConfig= {
   host: "http://localhost:9200",
   credential: {},
   index: "redash",
