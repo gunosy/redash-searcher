@@ -16,7 +16,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/ghcr.io/hiro-o918/redash-search-sync
+            ghcr.io/ghcr.io/hiro-o918/redash-search-web
           # generate Docker tags based on the following events/attributes
           tags: |
             type=ref,event=branch
