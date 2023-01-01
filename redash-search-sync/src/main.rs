@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use opensearch::http::transport::{SingleNodeConnectionPool, TransportBuilder};
 use opensearch::OpenSearch;
 use redash_search_sync::app::App;
@@ -7,16 +9,15 @@ use tracing::Level;
 
 #[tokio::main]
 async fn main() {
+    let config = &Configs::load_configs().unwrap();
     tracing_subscriber::fmt()
-        .with_max_level(Level::INFO)
+        .with_max_level(Level::from_str(&config.log_level).unwrap())
         .with_level(true)
         .with_target(true)
         .with_thread_ids(true)
         .with_thread_names(true)
         .json()
         .init();
-
-    let config = &Configs::load_configs().unwrap();
     let redash_client =
         Box::new(DefaultRedashClient::new(&config.redash.url, &config.redash.api_key).unwrap());
     let conn_pool = SingleNodeConnectionPool::new((&config.open_search.url).parse().unwrap());

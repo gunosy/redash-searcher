@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { withSearchkit, withSearchkitRouting } from "@searchkit/client";
 
-const Search = dynamic(() => import("./Search"), {
+const Search = dynamic(() => import("../components/Search"), {
   ssr: false,
 });
 

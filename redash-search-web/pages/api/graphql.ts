@@ -127,6 +127,7 @@ const server = new ApolloServer({
     ...typeDefs,
   ],
   resolvers: withSearchkitResolvers({}),
+  cache: "bounded",
   introspection: true,
   context: {
     ...context,
