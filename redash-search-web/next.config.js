@@ -7,8 +7,9 @@ const nextConfig = {
     emotion: true,
   },
   publicRuntimeConfig: {
-    redashURL: processEnv.REDASH__URL.replace(/\/$/, ""),
+    redashURL: (processEnv.REDASH__URL || "").replace(/\/$/, ""),
   },
+  output: "standalone",
 };
 
 module.exports = nextConfig;

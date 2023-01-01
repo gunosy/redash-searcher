@@ -16,7 +16,7 @@ import {
   EuiPageTemplate,
   EuiSpacer,
 } from "@elastic/eui";
-import HitsList from "../components/HitList";
+import HitsList from "./HitList";
 
 export const RESULT_SET_QUERY = gql`
   query resultSet(

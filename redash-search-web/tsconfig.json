@@ -20,7 +20,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/Search.tsx",
+    "components/Search.tsx",
     "components/searchkit/Hits.jsx"
   ],
   "exclude": ["node_modules"]
