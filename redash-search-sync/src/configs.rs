@@ -17,6 +17,7 @@ pub struct OpenSearchConfig {
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 pub struct Configs {
+    pub log_level: String,
     pub redash: RedashConfig,
     pub open_search: OpenSearchConfig,
 }
