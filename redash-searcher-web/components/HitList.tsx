@@ -10,13 +10,15 @@ import {
 } from "@elastic/eui";
 import { IResultHitItem } from "../pages/api/models";
 import { HighlightedQuery } from "./HighlightedQuery";
-import getConfig from "next/config";
-
-const { publicRuntimeConfig } = getConfig();
 
 export interface HitListProps {
   hitItems: IResultHitItem[];
 }
+
+const REDASH_URL = (process.env.NEXT_PUBLIC_REDASH__URL || "").replace(
+  /\/$/,
+  ""
+);
 
 const HitsList: React.FC<HitListProps> = ({ hitItems }) => {
   return (
@@ -29,12 +31,12 @@ const HitsList: React.FC<HitListProps> = ({ hitItems }) => {
               <EuiAvatar
                 name={`logo-${hit.fields.data_source_type}`}
                 size="l"
-                imageUrl={`${publicRuntimeConfig.redashURL}/static/images/db-logos/${hit.fields.data_source_type}.png`}
+                imageUrl={`${REDASH_URL}/static/images/db-logos/${hit.fields.data_source_type}.png`}
                 color="#e0e5ee"
               />
             }
             title={hit.fields.name}
-            href={`${publicRuntimeConfig.redashURL}/queries/${hit.id}`}
+            href={`${REDASH_URL}/queries/${hit.id}`}
             description={hit.fields.description}
           >
             <EuiFlexGrid gutterSize="xl">

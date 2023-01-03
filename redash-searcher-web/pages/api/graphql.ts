@@ -6,19 +6,17 @@ import {
   RefinementSelectFacet,
   SearchkitSchema,
 } from "@searchkit/schema";
-import getConfig from "next/config";
-
-const { privateRuntimeConfig } = getConfig();
 
 const getOpenSearchURI = () => {
-  const { openSearchURL, openSearchUserName, openSearchPassword } =
-    privateRuntimeConfig;
-  if (!(openSearchUserName && openSearchPassword)) {
+  const openSearchURL = process.env.OPEN_SEARCH__URL || "http://localhost:9200";
+  const openSearchUsername = process.env.OPEN_SEARCH__USERNAME;
+  const openSearchPassword = process.env.OPEN_SEARCH__PASSWORD;
+  if (!(openSearchUsername && openSearchPassword)) {
     return openSearchURL;
   }
   return openSearchURL.replace(
     "://",
-    `://${openSearchUserName}:${openSearchPassword}@`
+    `://${openSearchUsername}:${openSearchPassword}@`
   );
 };
 
