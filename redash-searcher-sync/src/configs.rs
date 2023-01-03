@@ -10,8 +10,8 @@ pub struct RedashConfig {
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 pub struct OpenSearchConfig {
-    pub username: String,
-    pub password: String,
+    pub username: Option<String>,
+    pub password: Option<String>,
     pub url: String,
 }
 

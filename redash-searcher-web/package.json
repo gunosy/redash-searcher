@@ -1,5 +1,5 @@
 {
-  "name": "redash-search-web",
+  "name": "redash-searcher-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {

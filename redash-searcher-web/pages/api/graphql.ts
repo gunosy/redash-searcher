@@ -6,9 +6,24 @@ import {
   RefinementSelectFacet,
   SearchkitSchema,
 } from "@searchkit/schema";
+import getConfig from "next/config";
 
-const searchkitConfig= {
-  host: "http://localhost:9200",
+const { privateRuntimeConfig } = getConfig();
+
+const getOpenSearchURI = () => {
+  const { openSearchURL, openSearchUserName, openSearchPassword } =
+    privateRuntimeConfig;
+  if (!(openSearchUserName && openSearchPassword)) {
+    return openSearchURL;
+  }
+  return openSearchURL.replace(
+    "://",
+    `://${openSearchUserName}:${openSearchPassword}@`
+  );
+};
+
+const searchkitConfig = {
+  host: getOpenSearchURI(),
   credential: {},
   index: "redash",
   hits: {

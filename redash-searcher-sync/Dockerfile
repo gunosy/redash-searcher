@@ -1,8 +1,8 @@
 # ref: https://dev.to/rogertorres/first-steps-with-docker-rust-30oi
 FROM rust:1.66.0-bullseye as build
 
-RUN USER=root cargo new --bin redash-search-sync
-WORKDIR /redash-search-sync
+RUN USER=root cargo new --bin redash-searcher-sync
+WORKDIR /redash-searcher-sync
 
 # copy over your manifests
 COPY ./Cargo.lock ./Cargo.lock
@@ -23,13 +23,13 @@ RUN cargo build --release
 FROM debian:bullseye-slim
 
 
-RUN addgroup --system --gid 1001 redash-search
-RUN adduser --system --uid 1001 redash-search-sync
+RUN addgroup --system --gid 1001 redash-searcher
+RUN adduser --system --uid 1001 redash-searcher-sync
 
 # copy the build artifact from the build stage
-COPY --from=build --chown=redash-search-sync:redash-search /redash-search-sync/target/release/redash-search-sync .
+COPY --from=build --chown=redash-searcher-sync:redash-searcher /redash-searcher-sync/target/release/redash-searcher-sync .
 
-USER redash-search-sync
+USER redash-searcher-sync
 
 # set the startup command to run your binary
-ENTRYPOINT ["./redash-search-sync"]
+ENTRYPOINT ["./redash-searcher-sync"]
