@@ -16,7 +16,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/ghcr.io/hiro-o918/redash-search-web
+            ghcr.io/ghcr.io/hiro-o918/redash-searcher-web
           # generate Docker tags based on the following events/attributes
           tags: |
             type=ref,event=branch
@@ -29,7 +29,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/ghcr.io/hiro-o918/redash-search-sync
+            ghcr.io/ghcr.io/hiro-o918/redash-searcher-sync
           # generate Docker tags based on the following events/attributes
           tags: |
             type=ref,event=branch
@@ -45,17 +45,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push (redash-search-sync)
+      - name: Build and push (redash-searcher-sync)
         uses: docker/build-push-action@v3
         with:
-          context: ./redash-search-sync
+          context: ./redash-searcher-sync
           push: true
           tags: ${{ steps.meta-sync.outputs.tags }}
           labels: ${{ steps.meta-sync.outputs.labels }}
-      - name: Build and push (redash-search-web)
+      - name: Build and push (redash-searcher-web)
         uses: docker/build-push-action@v3
         with:
-          context: ./redash-search-web
+          context: ./redash-searcher-web
           push: true
           tags: ${{ steps.meta-web.outputs.tags }}
           labels: ${{ steps.meta-web.outputs.labels }}
