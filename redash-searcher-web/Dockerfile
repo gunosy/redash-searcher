@@ -26,6 +26,8 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
+# set public env vars to be replaced at runtime
+ENV NEXT_PUBLIC_REDASH__URL=APP_NEXT_PUBLIC_REDASH__URL
 RUN yarn build
 
 # If using npm comment out above and use below instead
@@ -56,4 +58,8 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-ENTRYPOINT ["node", "server.js"]
+COPY --chown=redash-searcher-web:redash-searcher entrypoint.sh ./
+
+ENTRYPOINT [ "bash", "entrypoint.sh" ]
+
+CMD ["node", "server.js"]
