@@ -22,10 +22,12 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
+# Learn more here: https://redash-searcher-web.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
+# set public env vars to be replaced at runtime
+ENV NEXT_PUBLIC_REDASH__URL=APP_NEXT_PUBLIC_REDASH__URL
 RUN yarn build
 
 # If using npm comment out above and use below instead
@@ -39,21 +41,25 @@ ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 redash-searcher
+RUN adduser --system --uid 1001 redash-searcher-web
 
 COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/server ./.next/server
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# https://nexjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=redash-searcher-web:redash-searcher /app/.next/standalone ./
+COPY --from=builder --chown=redash-searcher-web:redash-searcher /app/.next/server ./.next/server
+COPY --from=builder --chown=redash-searcher-web:redash-searcher /app/.next/static ./.next/static
 
-USER nextjs
+USER redash-searcher-web
 
 EXPOSE 3000
 
 ENV PORT 3000
 
-ENTRYPOINT ["node", "server.js"]
+COPY --chown=redash-searcher-web:redash-searcher entrypoint.sh ./
+
+ENTRYPOINT [ "bash", "entrypoint.sh" ]
+
+CMD ["node", "server.js"]

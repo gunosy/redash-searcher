@@ -2,9 +2,9 @@ use std::str::FromStr;
 
 use opensearch::http::transport::{SingleNodeConnectionPool, TransportBuilder};
 use opensearch::OpenSearch;
-use redash_search_sync::app::App;
-use redash_search_sync::configs::Configs;
-use redash_search_sync::redash::DefaultRedashClient;
+use redash_searcher_sync::app::App;
+use redash_searcher_sync::configs::Configs;
+use redash_searcher_sync::redash::DefaultRedashClient;
 use tracing::Level;
 
 #[tokio::main]
@@ -21,13 +21,14 @@ async fn main() {
     let redash_client =
         Box::new(DefaultRedashClient::new(&config.redash.url, &config.redash.api_key).unwrap());
     let conn_pool = SingleNodeConnectionPool::new((&config.open_search.url).parse().unwrap());
-    let transport = TransportBuilder::new(conn_pool)
-        .auth(opensearch::auth::Credentials::Basic(
-            (&config.open_search.username).clone(),
-            (&config.open_search.password).clone(),
-        ))
-        .build()
-        .expect("failed to build transport");
+    let mut builder = TransportBuilder::new(conn_pool);
+    if !(config.open_search.username.is_none() || config.open_search.password.is_none()) {
+        builder = builder.auth(opensearch::auth::Credentials::Basic(
+            config.open_search.username.clone().unwrap(),
+            config.open_search.password.clone().unwrap(),
+        ));
+    }
+    let transport = builder.build().expect("failed to build transport");
     let client = OpenSearch::new(transport);
 
     let app = App::new(redash_client, client);

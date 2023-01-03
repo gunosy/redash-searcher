@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   opensearch-dashboards:
@@ -20,7 +20,7 @@ services:
       - cluster.initial_master_nodes=main
       - bootstrap.memory_lock=true
       - http.host=0.0.0.0
-      - plugins.security.disabled=true
+      - plugins.security.ssl.http.enabled=false
       - transport.host=127.0.0.1
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -37,6 +37,31 @@ services:
     networks:
       - redash-searcher
 
+  redash-searcher-sync:
+    restart: on-failure
+    build:
+      context: ./redash-searcher-sync
+      dockerfile: Dockerfile
+    env_file:
+      - .env.docker
+    depends_on:
+      - opensearch-node-main
+    networks:
+      - redash-searcher
+
+  redash-searcher-web:
+    restart: on-failure
+    build:
+      context: ./redash-searcher-web
+      dockerfile: Dockerfile
+    env_file:
+      - .env.docker
+    ports:
+      - 3000:3000
+    depends_on:
+      - redash-searcher-sync
+    networks:
+      - redash-searcher
 
 volumes:
   opensearch-node-main-data:

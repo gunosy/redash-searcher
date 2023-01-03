@@ -7,8 +7,21 @@ import {
   SearchkitSchema,
 } from "@searchkit/schema";
 
-const searchkitConfig= {
-  host: "http://localhost:9200",
+const getOpenSearchURI = () => {
+  const openSearchURL = process.env.OPEN_SEARCH__URL || "http://localhost:9200";
+  const openSearchUsername = process.env.OPEN_SEARCH__USERNAME;
+  const openSearchPassword = process.env.OPEN_SEARCH__PASSWORD;
+  if (!(openSearchUsername && openSearchPassword)) {
+    return openSearchURL;
+  }
+  return openSearchURL.replace(
+    "://",
+    `://${openSearchUsername}:${openSearchPassword}@`
+  );
+};
+
+const searchkitConfig = {
+  host: getOpenSearchURI(),
   credential: {},
   index: "redash",
   hits: {
