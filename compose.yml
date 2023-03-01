@@ -44,6 +44,8 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env.docker
+    environment:
+      - RUST_BACKTRACE=1
     depends_on:
       - opensearch-node-main
     networks:
