@@ -170,7 +170,7 @@ impl App {
             })
             .await?;
         let mut body: Vec<JsonBody<_>> = Vec::new();
-        let mut latest_updated_at = DateTime::<Local>::MAX_UTC;
+        let mut oldest_updated_at = DateTime::<Local>::MAX_UTC;
         for query in res.results {
             let data_source = data_sources.get(&query.data_source_id).unwrap();
             let doc = RedashDocument {
@@ -195,7 +195,7 @@ impl App {
                 .into(),
             );
             body.push(serde_json::to_value(&doc).unwrap().into());
-            latest_updated_at = latest_updated_at.min(query.updated_at.into());
+            oldest_updated_at = oldest_updated_at.min(query.updated_at.into());
         }
         let res = self
             .open_search_client
@@ -212,20 +212,20 @@ impl App {
             Err(anyhow!("failed to bulk create"))
         } else {
             tracing::debug!(response = res.text().await.unwrap(), "bulk create success");
-            Ok(latest_updated_at.into())
+            Ok(oldest_updated_at.into())
         }
     }
 
     pub async fn sync(&self) -> Result<()> {
         let data_sources = self.redash_client.get_data_sources().await?;
-        let oldest_updated_at = self.get_latest_updated_at().await?;
-        tracing::info!(oldest_updated_at = ?oldest_updated_at, "update queries to this time");
+        let latest_updated_at = self.get_latest_updated_at().await?;
+        tracing::info!(oldest_updated_at = ?latest_updated_at, "update queries to this time");
 
         let mut page_num = 1;
         loop {
             tracing::info!(page_num, "sync page");
             let updated_at = self.sync_once(page_num, &data_sources).await?;
-            if updated_at <= oldest_updated_at {
+            if updated_at <= latest_updated_at {
                 tracing::info!(updated_at = ?updated_at, "sync page done");
                 break;
             }

@@ -22,7 +22,7 @@ async fn main() {
         Box::new(DefaultRedashClient::new(&config.redash.url, &config.redash.api_key).unwrap());
     let conn_pool = SingleNodeConnectionPool::new((&config.open_search.url).parse().unwrap());
     let mut builder = TransportBuilder::new(conn_pool);
-    if !(config.open_search.username.is_none() || config.open_search.password.is_none()) {
+    if config.open_search.username.is_some() && config.open_search.password.is_some() {
         builder = builder.auth(opensearch::auth::Credentials::Basic(
             config.open_search.username.clone().unwrap(),
             config.open_search.password.clone().unwrap(),
@@ -30,6 +30,11 @@ async fn main() {
     }
     let transport = builder.build().expect("failed to build transport");
     let client = OpenSearch::new(transport);
+    client
+        .ping()
+        .send()
+        .await
+        .expect("failed to ping to opensearch");
 
     let app = App::new(redash_client, client);
     app.create_redash_index_if_not_exists().await.unwrap();
