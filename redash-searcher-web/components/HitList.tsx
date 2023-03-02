@@ -36,7 +36,7 @@ const HitsList: React.FC<HitListProps> = ({ hitItems }) => {
               />
             }
             title={hit.fields.name}
-            href={`${REDASH_URL}/queries/${hit.id}`}
+            href={`${REDASH_URL}/queries/${hit.id}/source`}
             description={hit.fields.description}
           >
             <EuiFlexGrid gutterSize="xl">
