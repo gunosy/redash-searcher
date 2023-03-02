@@ -1,4 +1,5 @@
 export interface IResultHitField {
+  id: number;
   name: string;
   description: string;
   query: string;
@@ -15,10 +16,4 @@ export interface IResultHitField {
 export interface IResultHitHighlight {
   name: string[];
   query: string[];
-}
-
-export interface IResultHitItem {
-  id: string;
-  fields: IResultHitField;
-  highlight: IResultHitHighlight;
 }
