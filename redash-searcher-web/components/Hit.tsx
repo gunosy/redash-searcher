@@ -4,7 +4,6 @@ import {
   EuiFlexGrid,
   EuiFlexItem,
   EuiCard,
-  EuiSpacer,
   EuiDescriptionList,
   EuiFlexGroup,
   EuiAvatar,
