@@ -40,7 +40,9 @@ async fn main() {
     app.create_redash_index_if_not_exists().await.unwrap();
     loop {
         tracing::info!("start sync");
-        app.sync().await.unwrap();
+        _ = app.sync().await.map_err(|err| {
+            tracing::error!(err = ?err, "failed to sync");
+        });
         tokio::time::sleep(std::time::Duration::from_secs(60)).await;
     }
 }
