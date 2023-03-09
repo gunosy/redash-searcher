@@ -1,62 +1,85 @@
+import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
+import qs from "qs";
+import Client from "@searchkit/instantsearch-client";
 import dynamic from "next/dynamic";
-import { withSearchkit, withSearchkitRouting } from "@searchkit/client";
 
-const Search = dynamic(() => import("../components/Search"), {
+const APP_URL = (process.env.NEXT_PUBLIC_APP__URL || "").replace(/\/$/, "");
+
+const searchClient = Client({
+  url: `${APP_URL}/api/search`,
+});
+
+const urlUpdateAfterMills = 500;
+
+const createURL = (state: any) => `?${qs.stringify(state)}`;
+
+const pathToSearchState = (path: string) =>
+  path.includes("?") ? qs.parse(path.substring(path.indexOf("?") + 1)) : {};
+
+interface ISearchState {
+  page?: number;
+  query?: string;
+  refinementList?: {
+    [key: string]: string[];
+  };
+}
+
+const searchStateToURL = (searchState: ISearchState) => {
+  // filter empty values from url
+  // copy searchState
+  searchState = { ...searchState };
+  !searchState.page && delete searchState.page;
+  !searchState.query && delete searchState.query;
+  for (const key in searchState.refinementList) {
+    if (!searchState.refinementList[key]) {
+      delete searchState.refinementList[key];
+    }
+  }
+  !searchState.refinementList && delete searchState.refinementList;
+
+  return searchState
+    ? `${window.location.pathname}?${qs.stringify(searchState)}`
+    : "";
+};
+
+const App = dynamic(() => import("../components/App"), {
   ssr: false,
 });
 
-export default withSearchkit(
-  withSearchkitRouting(Search, {
-    createURL: ({ qsModule, location, routeState }) => {
-      let filters;
-      let typeCategoryURL = "all";
-      if (routeState.filters) {
-        filters = routeState.filters.reduce(
-          (sum: any, filter: any) => {
-            if (filter.identifier === "type") {
-              sum.type.push(filter);
-            } else {
-              sum.all.push(filter);
-            }
-            return sum;
-          },
-          {
-            type: [],
-            all: [],
-          }
-        );
-        if (filters.type.length > 0) {
-          typeCategoryURL = filters.type
-            .map((filter: any) => filter.value)
-            .join("_");
-        }
-      }
+const DEFAULT_PROPS = {
+  searchClient,
+  indexName: "redash",
+};
 
-      let newRouteState = {
-        ...routeState,
-        ...(filters ? { filters: filters.all } : {}),
-      };
+export default function Page(props: any) {
+  const [searchState, setSearchState] = useState({});
+  const router = useRouter();
+  const debouncedSetState = useRef<any>();
 
-      const queryString = qsModule.stringify(newRouteState, {
-        addQueryPrefix: true,
-      });
+  useEffect(() => {
+    if (router) {
+      setSearchState(pathToSearchState(router.asPath));
+    }
+  }, [router]);
 
-      return `/type/${typeCategoryURL}${queryString}`;
-    },
-    parseURL: ({ qsModule, location }) => {
-      const matches = location.pathname.match(/type\/(\w+)/);
-      const routeState = qsModule.parse(location.search.slice(1), {
-        arrayLimit: 99,
-      });
+  return (
+    <div>
+      <App
+        {...DEFAULT_PROPS}
+        searchState={searchState}
+        resultsState={props.resultsState}
+        onSearchStateChange={(nextSearchState: any) => {
+          clearTimeout(debouncedSetState.current);
+          debouncedSetState.current = setTimeout(() => {
+            const href = searchStateToURL(nextSearchState);
 
-      if (matches && matches[1] && matches[1] !== "all") {
-        const typeFilters = matches[1]
-          .split("_")
-          .map((value) => ({ identifier: "type", value }));
-        if (!routeState.filters) routeState.filters = [];
-        routeState.filters = [...routeState.filters, ...typeFilters];
-      }
-      return routeState;
-    },
-  })
-);
+            router.push(href, href, { shallow: true });
+          }, urlUpdateAfterMills);
+          setSearchState(nextSearchState);
+        }}
+        createURL={createURL}
+      />
+    </div>
+  );
+}

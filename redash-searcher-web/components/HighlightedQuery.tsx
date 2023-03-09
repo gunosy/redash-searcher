@@ -1,22 +1,36 @@
-import { EuiCallOut, EuiText } from "@elastic/eui";
-import dompurify from "dompurify";
+import { EuiCallOut } from "@elastic/eui";
+import { connectHighlight } from "react-instantsearch-dom";
 
-export interface HighlightedQueryProps {
-  query: string;
-}
-
-export const HighlightedQuery: React.FC<HighlightedQueryProps> = ({
-  query,
-}: HighlightedQueryProps) => {
-  const sanitizer = dompurify.sanitize;
+const HighlightQueryInner = ({ highlight, attribute, hit }: any) => {
+  const parsedHit = highlight({
+    highlightProperty: "_highlightResult",
+    attribute,
+    hit,
+  });
   return (
-    <EuiCallOut>
-      <p
-        style={{ whiteSpace: "pre-wrap" }}
-        dangerouslySetInnerHTML={{
-          __html: sanitizer(query),
-        }}
-      />
+    <EuiCallOut
+      style={{ whiteSpace: "pre-wrap", maxWidth: "1000px" }}
+      color={"success"}
+    >
+      <span className="ais-Highlight">
+        <span>
+          {parsedHit.map((part: any, index: number) =>
+            part.isHighlighted ? (
+              <mark className="ais-Highlight-highlighted" key={index}>
+                {part.value}
+              </mark>
+            ) : (
+              <span className="ais-Highlight-nonHighlighted" key={index}>
+                {part.value}
+              </span>
+            )
+          )}
+        </span>
+      </span>
     </EuiCallOut>
   );
 };
+
+const HighlightedQuery = connectHighlight(HighlightQueryInner);
+
+export default HighlightedQuery;
