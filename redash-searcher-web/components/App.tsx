@@ -1,4 +1,4 @@
-import { EuiPageTemplate, EuiTitle } from "@elastic/eui";
+import { EuiHorizontalRule, EuiPageTemplate, EuiTitle } from "@elastic/eui";
 import React from "react";
 import {
   RefinementList,
@@ -41,6 +41,7 @@ export default function App(props: InstantSearchProps) {
             <EuiTitle size="l">
               <h1>Redash Searcher</h1>
             </EuiTitle>
+            <EuiHorizontalRule margin="m" />
             <EuiTitle size="xs">
               <h4>Data Source</h4>
             </EuiTitle>
@@ -49,6 +50,7 @@ export default function App(props: InstantSearchProps) {
               searchable={true}
               limit={10}
             />
+            <EuiHorizontalRule margin="xs" />
             <EuiTitle size="xs">
               <h4>User Name</h4>
             </EuiTitle>
@@ -57,6 +59,7 @@ export default function App(props: InstantSearchProps) {
               searchable={true}
               limit={10}
             />
+            <EuiHorizontalRule margin="xs" />
             <EuiTitle size="xs">
               <h4>User Email</h4>
             </EuiTitle>
@@ -65,6 +68,7 @@ export default function App(props: InstantSearchProps) {
               searchable={true}
               limit={10}
             />
+            <EuiHorizontalRule margin="xs" />
             <EuiTitle size="xs">
               <h4>Tags</h4>
             </EuiTitle>
