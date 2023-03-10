@@ -1,4 +1,5 @@
-import { EuiCallOut } from "@elastic/eui";
+import { EuiButtonIcon, EuiCallOut } from "@elastic/eui";
+import { useState } from "react";
 import { connectHighlight } from "react-instantsearch-dom";
 
 const HighlightQueryInner = ({ highlight, attribute, hit }: any) => {
@@ -7,27 +8,59 @@ const HighlightQueryInner = ({ highlight, attribute, hit }: any) => {
     attribute,
     hit,
   });
+
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const callOutStyle = isExpanded
+    ? {}
+    : { maxHeight: "250px", overflow: "auto" };
+
   return (
-    <EuiCallOut
-      style={{ whiteSpace: "pre-wrap", maxWidth: "1000px" }}
-      color={"success"}
-    >
-      <span className="ais-Highlight">
-        <span>
-          {parsedHit.map((part: any, index: number) =>
-            part.isHighlighted ? (
-              <mark className="ais-Highlight-highlighted" key={index}>
-                {part.value}
-              </mark>
-            ) : (
-              <span className="ais-Highlight-nonHighlighted" key={index}>
-                {part.value}
-              </span>
-            )
-          )}
+    <>
+      <EuiCallOut
+        style={{
+          whiteSpace: "pre-wrap",
+          maxWidth: "1000px",
+          ...callOutStyle,
+        }}
+        color={"success"}
+      >
+        <span
+          className="ais-Highlight"
+          style={{ maxHeight: "10px", overflow: "auto" }}
+        >
+          <span>
+            {parsedHit.map((part: any, index: number) =>
+              part.isHighlighted ? (
+                <mark className="ais-Highlight-highlighted" key={index}>
+                  {part.value}
+                </mark>
+              ) : (
+                <span className="ais-Highlight-nonHighlighted" key={index}>
+                  {part.value}
+                </span>
+              )
+            )}
+          </span>
         </span>
-      </span>
-    </EuiCallOut>
+      </EuiCallOut>
+      {isExpanded && (
+        <EuiButtonIcon
+          display="empty"
+          iconType={"arrowUp"}
+          onClick={() => setIsExpanded(!isExpanded)}
+          style={{ margin: "10px auto", display: "block" }}
+        />
+      )}
+      {!isExpanded && (
+        <EuiButtonIcon
+          display="empty"
+          iconType={"arrowDown"}
+          onClick={() => setIsExpanded(!isExpanded)}
+          style={{ margin: "10px auto", display: "block" }}
+        />
+      )}
+    </>
   );
 };
 
