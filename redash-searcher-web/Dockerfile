@@ -28,6 +28,7 @@ COPY . .
 
 # set public env vars to be replaced at runtime
 ENV NEXT_PUBLIC_REDASH__URL=APP_NEXT_PUBLIC_REDASH__URL
+ENV NEXT_PUBLIC_APP__URL=APP_NEXT_PUBLIC_APP__URL
 RUN yarn build
 
 # If using npm comment out above and use below instead

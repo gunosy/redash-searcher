@@ -4,7 +4,9 @@
 
 echo "Check that we have NEXT_PUBLIC_REDASH__URL vars"
 test -n "$NEXT_PUBLIC_REDASH__URL"
+test -n "$NEXT_PUBLIC_APP__URL"
 
 find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#APP_NEXT_PUBLIC_REDASH__URL#$NEXT_PUBLIC_REDASH__URL#g"
+find /app/.next \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#APP_NEXT_PUBLIC_APP__URL#$NEXT_PUBLIC_APP__URL#g"
 
 exec "$@"
