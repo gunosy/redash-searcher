@@ -80,8 +80,6 @@ export default function App(props: InstantSearchProps) {
             <div style={{ margin: "1rem 0" }}>
               <CurrentRefinements transformItems={reduceDuplicateRefinement} />
             </div>
-          </EuiPageTemplate.Section>
-          <EuiPageTemplate.Section>
             <InfiniteHits hitComponent={Hit} />
           </EuiPageTemplate.Section>
         </EuiPageTemplate>
