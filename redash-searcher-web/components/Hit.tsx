@@ -7,6 +7,8 @@ import {
   EuiDescriptionList,
   EuiFlexGroup,
   EuiAvatar,
+  EuiHorizontalRule,
+  EuiButtonEmpty,
 } from "@elastic/eui";
 import HighlightedQuery from "./HighlightedQuery";
 
@@ -32,10 +34,10 @@ const Hit: React.FC<HitProps> = ({ hit }: HitProps) => {
         />
       }
       title={hit.name}
-      href={`${REDASH_URL}/queries/${hit.id}/source`}
       description={hit.description}
     >
-      <EuiFlexGrid gutterSize="xl">
+      <EuiHorizontalRule margin="l" />
+      <EuiFlexGrid gutterSize="m">
         <EuiFlexGroup>
           <EuiFlexItem grow={5}>
             <EuiDescriptionList
@@ -76,13 +78,25 @@ const Hit: React.FC<HitProps> = ({ hit }: HitProps) => {
             />
           </EuiFlexItem>
         </EuiFlexGroup>
-        {hit._highlightResult.query?.matchedWords.length !== 0 && (
-          <EuiFlexGroup>
-            <EuiFlexItem grow={5}>
-              <HighlightedQuery hit={hit} attribute="query"></HighlightedQuery>
-            </EuiFlexItem>
-          </EuiFlexGroup>
-        )}
+        <EuiFlexGroup alignItems="flexStart">
+          <EuiFlexItem grow={false}>
+            <EuiButtonEmpty
+              iconType={"lensApp"}
+              href={`${REDASH_URL}/queries/${hit.id}/source`}
+              target="_blank"
+              style={{ margin: "10px auto", display: "block" }}
+              contentProps={{ style: { padding: "0" } }}
+            >
+              Open Redash
+            </EuiButtonEmpty>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin="xs" />
+        <EuiFlexGroup>
+          <EuiFlexItem grow={5}>
+            <HighlightedQuery hit={hit} attribute="query"></HighlightedQuery>
+          </EuiFlexItem>
+        </EuiFlexGroup>
       </EuiFlexGrid>
     </EuiCard>
   );
