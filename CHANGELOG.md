@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.2.2](https://github.com/gunosy/redash-searcher/compare/v0.2.1...v0.2.2) - 2023-03-15
+- feat: retry to ping to opensearch to avoid frequently panic by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/26
+- Revert "Revert "chore: introduce tagpr"" by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/27
+
 ## [v0.2.1](https://github.com/gunosy/redash-searcher/compare/v0.2.0...v0.2.1) - 2023-03-10
 - chore: introduce tagpr by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/22
 - fix: replace NEXT_PUBLIC_APP__URL on entrypoint of web image by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/24
