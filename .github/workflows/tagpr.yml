@@ -1,4 +1,4 @@
-name: tagpr
+name: Tag PR
 on:
   push:
     branches:
@@ -6,13 +6,18 @@ on:
 
 jobs:
   tagpr:
-    runs-on: ubuntu-latest
-    outputs:
-      tagpr-tag: ${{ steps.run-tagpr.outputs.tag }}
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: ubuntu-22.04
     steps:
+      - uses: tibdex/github-app-token@v1
+        id: github_app_token
+        with:
+          app_id: ${{ secrets.ORG_GITHUB_ACTIONS_APP_ID }}
+          private_key: ${{ secrets.ORG_GITHUB_ACTIONS_APP_PRIVATE_KEY }}
       - uses: actions/checkout@v3
+        with:
+          token: ${{ steps.github_app_token.outputs.token }}
       - name: Run tagpr
         id: run-tagpr
         uses: Songmu/tagpr@v1
+        env:
+          GITHUB_TOKEN: ${{ steps.github_app_token.outputs.token }}

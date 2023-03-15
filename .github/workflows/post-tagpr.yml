@@ -1,0 +1,57 @@
+name: Post Workflows for Tag PR
+on:
+  pull_request
+
+concurrency:
+  group: post-tagpr-${{ github.event.pull_request.number }}
+
+jobs:
+  post-tagpr:
+    if: startsWith(github.head_ref, 'tagpr-from-')
+    permissions:
+      contents: write
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: tibdex/github-app-token@v1
+        id: github_app_token
+        with:
+          app_id: ${{ secrets.ORG_GITHUB_ACTIONS_APP_ID }}
+          private_key: ${{ secrets.ORG_GITHUB_ACTIONS_APP_PRIVATE_KEY }}
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ steps.github_app_token.outputs.token }}
+
+      # lock redash-searcher-web
+      - name: Set Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: yarn
+          cache-dependency-path: redash-searcher-web/yarn.lock
+      - name: update yarn.lock
+        run: |
+          yarn install
+        working-directory: redash-searcher-web
+
+      # lock redash-searcher-sync
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: redash-searcher-sync
+      - name: update Cargo.lock
+        run: |
+          cargo c
+        working-directory: redash-searcher-sync
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        id: auto-commit-action
+        with:
+          commit_message: 'chore: update lock files'
+          file_pattern: 'redash-searcher-web/yarn.lock redash-searcher-sync/Cargo.lock'
+      - name: check if commit was made
+        if: steps.auto-commit-action.outputs.changes_detected == 'true'
+        run: |
+          echo "Changes detected, commit made"
+          exit 1
