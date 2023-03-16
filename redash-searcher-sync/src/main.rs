@@ -1,7 +1,7 @@
 use std::str::FromStr;
 use std::time::Duration;
 
-use anyhow::{Error, Context};
+use anyhow::{Context, Error};
 use opensearch::http::transport::{SingleNodeConnectionPool, TransportBuilder};
 use opensearch::OpenSearch;
 use redash_searcher_sync::app::App;
@@ -9,8 +9,11 @@ use redash_searcher_sync::configs::Configs;
 use redash_searcher_sync::redash::DefaultRedashClient;
 use tracing::Level;
 
-
-async fn ping_opensearch(client: &OpenSearch, max_retry_count: i8, ping_interval: Duration) -> Result<(), Error> {
+async fn ping_opensearch(
+    client: &OpenSearch,
+    max_retry_count: i8,
+    ping_interval: Duration,
+) -> Result<(), Error> {
     let mut retry_count = 0;
     loop {
         let ping_result = client.ping().send().await;
@@ -23,7 +26,10 @@ async fn ping_opensearch(client: &OpenSearch, max_retry_count: i8, ping_interval
                 if retry_count == max_retry_count {
                     return Err(err).context("ping opensearch");
                 }
-                tracing::warn!(err = err.to_string(), "failed to ping opensearch, retrying...");
+                tracing::warn!(
+                    err = err.to_string(),
+                    "failed to ping opensearch, retrying..."
+                );
                 tokio::time::sleep(ping_interval).await;
             }
         }
@@ -53,7 +59,13 @@ async fn main() {
     }
     let transport = builder.build().expect("failed to build transport");
     let client = OpenSearch::new(transport);
-    ping_opensearch(&client, 6, Duration::from_secs(10)).await.unwrap();
+    ping_opensearch(
+        &client,
+        config.open_search.max_retry_count_on_ping,
+        Duration::from_secs(config.open_search.ping_interval),
+    )
+    .await
+    .unwrap();
 
     let app = App::new(redash_client, client);
     app.create_redash_index_if_not_exists().await.unwrap();
