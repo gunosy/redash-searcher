@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.2.4](https://github.com/gunosy/redash-searcher/compare/v0.2.3...v0.2.4) - 2023-03-16
+- fix: use Duration for config fields by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/31
+
 ## [v0.2.3](https://github.com/gunosy/redash-searcher/compare/v0.2.2...v0.2.3) - 2023-03-16
 - add configuration to ping to opensearch by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/29
 
