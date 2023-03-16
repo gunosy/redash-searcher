@@ -1,7 +1,7 @@
 use std::str::FromStr;
-use std::time::Duration;
 
 use anyhow::{Context, Error};
+use chrono::Duration;
 use opensearch::http::transport::{SingleNodeConnectionPool, TransportBuilder};
 use opensearch::OpenSearch;
 use redash_searcher_sync::app::App;
@@ -30,7 +30,7 @@ async fn ping_opensearch(
                     err = err.to_string(),
                     "failed to ping opensearch, retrying..."
                 );
-                tokio::time::sleep(ping_interval).await;
+                tokio::time::sleep(ping_interval.to_std().unwrap()).await;
             }
         }
     }
@@ -62,7 +62,7 @@ async fn main() {
     ping_opensearch(
         &client,
         config.open_search.max_retry_count_on_ping,
-        Duration::from_secs(config.open_search.ping_interval),
+        config.open_search.ping_interval,
     )
     .await
     .unwrap();
