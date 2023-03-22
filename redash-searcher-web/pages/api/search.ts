@@ -36,6 +36,7 @@ const client = Client({
       "tags",
       "created_at",
       "updated_at",
+      "retrieved_at",
       "data_source_name",
       "data_source_type",
     ],
@@ -51,8 +52,12 @@ const client = Client({
         type: "string",
       },
       { attribute: "user_name", field: "user_name.keyword", type: "string" },
-      { attribute: "user_email", field: "user_email.keyword", type: "string" },
       { attribute: "tags", field: "tags.keyword", type: "string" },
+    ],
+    filter_attributes: [
+      { attribute: "created_at", field: "created_at", type: "date" },
+      { attribute: "updated_at", field: "updated_at", type: "date" },
+      { attribute: "retrieved_at", field: "retrieved_at", type: "date" },
     ],
     sorting: {
       default: {

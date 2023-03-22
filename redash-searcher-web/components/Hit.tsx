@@ -74,6 +74,10 @@ const Hit: React.FC<HitProps> = ({ hit }: HitProps) => {
                   title: "Updated At",
                   description: hit.updated_at,
                 },
+                {
+                  title: "Last Retrieved At",
+                  description: hit.retrieved_at || "Never",
+                },
               ]}
             />
           </EuiFlexItem>

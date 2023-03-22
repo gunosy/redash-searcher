@@ -9,6 +9,7 @@ export interface IResultHitField {
   tags: string[];
   created_at: string;
   updated_at: string;
+  retrieved_at?: string;
   data_source_name: string;
   data_source_type: string;
 }
