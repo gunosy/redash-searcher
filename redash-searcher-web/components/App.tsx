@@ -64,7 +64,7 @@ export default function App(props: InstantSearchProps) {
             <EuiTitle size="xs">
               <h4>Created At</h4>
             </EuiTitle>
-            <RangeSlider attribute="updated_at" />
+            <DateRangePicker attribute="updated_at" />
             <EuiHorizontalRule margin="xs" />
             <EuiTitle size="xs">
               <h4>Tags</h4>
