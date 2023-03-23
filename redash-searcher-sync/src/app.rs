@@ -45,12 +45,16 @@ static INDEX_CONFIG: Lazy<Value> = Lazy::new(|| {
                 },
                 "created_at": {
                     "type": "date",
-                    "format": "date_time"
+                    "format": "date_time||epoch_millis"
                 },
                 "updated_at": {
                     "type": "date",
-                    "format": "date_time"
+                    "format": "date_time||epoch_millis"
                 },
+                "retrieved_at": {
+                    "type": "date",
+                    "format": "date_time||epoch_millis"
+                }
             }
         }
     })

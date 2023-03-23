@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@algolia/react-instantsearch-widget-date-range-picker": "^1.1.2",
+    "@duetds/date-picker": "^1.4.0",
     "@elastic/datemath": "^5.0.3",
-    "@elastic/eui": "72.0.0",
+    "@elastic/eui": "76.3.0",
     "@emotion/css": "11.10.5",
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
