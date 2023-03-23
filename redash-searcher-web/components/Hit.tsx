@@ -33,7 +33,22 @@ const Hit: React.FC<HitProps> = ({ hit }: HitProps) => {
           color="#e0e5ee"
         />
       }
-      title={hit.name}
+      title={
+        <div>
+          <h2>
+            {hit.name}
+            <EuiButtonEmpty
+              iconType={"lensApp"}
+              href={`${REDASH_URL}/queries/${hit.id}/source`}
+              target="_blank"
+              style={{ margin: "0 8px" }}
+              contentProps={{ style: { padding: "0" } }}
+            >
+              Open Redash
+            </EuiButtonEmpty>
+          </h2>
+        </div>
+      }
       description={hit.description}
     >
       <EuiHorizontalRule margin="l" />
@@ -76,19 +91,6 @@ const Hit: React.FC<HitProps> = ({ hit }: HitProps) => {
                 },
               ]}
             />
-          </EuiFlexItem>
-        </EuiFlexGroup>
-        <EuiFlexGroup alignItems="flexStart">
-          <EuiFlexItem grow={false}>
-            <EuiButtonEmpty
-              iconType={"lensApp"}
-              href={`${REDASH_URL}/queries/${hit.id}/source`}
-              target="_blank"
-              style={{ margin: "10px auto", display: "block" }}
-              contentProps={{ style: { padding: "0" } }}
-            >
-              Open Redash
-            </EuiButtonEmpty>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiHorizontalRule margin="xs" />

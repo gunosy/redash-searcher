@@ -1,4 +1,5 @@
 import { EuiHorizontalRule, EuiPageTemplate, EuiTitle } from "@elastic/eui";
+import { DateRangePicker } from "@algolia/react-instantsearch-widget-date-range-picker";
 import React from "react";
 import {
   RefinementList,
@@ -8,7 +9,6 @@ import {
   Stats,
   InfiniteHits,
   InstantSearchProps,
-  Hits,
 } from "react-instantsearch-dom";
 import Hit from "../components/Hit";
 
@@ -61,13 +61,19 @@ export default function App(props: InstantSearchProps) {
             />
             <EuiHorizontalRule margin="xs" />
             <EuiTitle size="xs">
-              <h4>User Email</h4>
+              <h4>Created At</h4>
             </EuiTitle>
-            <RefinementList
-              attribute="user_email"
-              searchable={true}
-              limit={10}
-            />
+            <DateRangePicker attribute="created_at" />
+            <EuiHorizontalRule margin="xs" />
+            <EuiTitle size="xs">
+              <h4>Updated At</h4>
+            </EuiTitle>
+            <DateRangePicker attribute="updated_at" />
+            <EuiHorizontalRule margin="xs" />
+            <EuiTitle size="xs">
+              <h4>Last Retrieved At</h4>
+            </EuiTitle>
+            <DateRangePicker attribute="retrieved_at" />
             <EuiHorizontalRule margin="xs" />
             <EuiTitle size="xs">
               <h4>Tags</h4>

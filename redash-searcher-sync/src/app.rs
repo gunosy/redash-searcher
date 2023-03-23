@@ -45,12 +45,16 @@ static INDEX_CONFIG: Lazy<Value> = Lazy::new(|| {
                 },
                 "created_at": {
                     "type": "date",
-                    "format": "date_time"
+                    "format": "date_time||epoch_millis"
                 },
                 "updated_at": {
                     "type": "date",
-                    "format": "date_time"
+                    "format": "date_time||epoch_millis"
                 },
+                "retrieved_at": {
+                    "type": "date",
+                    "format": "date_time||epoch_millis"
+                }
             }
         }
     })
@@ -216,7 +220,7 @@ impl App {
         }
     }
 
-    pub async fn sync(&self) -> Result<()> {
+    pub async fn sync(&self, full_refresh: bool) -> Result<()> {
         let data_sources = self.redash_client.get_data_sources().await?;
         let latest_updated_at = self.get_latest_updated_at().await?;
         tracing::info!(oldest_updated_at = ?latest_updated_at, "update queries to this time");
@@ -225,11 +229,11 @@ impl App {
         loop {
             tracing::info!(page_num, "sync page");
             let updated_at = self.sync_once(page_num, &data_sources).await?;
-            if updated_at <= latest_updated_at {
+            if updated_at <= latest_updated_at && !full_refresh {
                 tracing::info!(updated_at = ?updated_at, "sync page done");
                 break;
             }
-            if page_num > 1000 {
+            if page_num > 10000 {
                 tracing::warn!("too many pages");
                 break;
             }
