@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.2.5](https://github.com/gunosy/redash-searcher/compare/v0.2.4...v0.2.5) - 2023-03-23
+- Add time filter for Redash query by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/33
+- chore: configure renovate by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/35
+
 ## [v0.2.4](https://github.com/gunosy/redash-searcher/compare/v0.2.3...v0.2.4) - 2023-03-16
 - fix: use Duration for config fields by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/31
 
