@@ -69,11 +69,13 @@ async fn main() {
 
     let app = App::new(redash_client, client);
     app.create_redash_index_if_not_exists().await.unwrap();
+    let mut full_refresh = config.open_search.first_full_refresh;
     loop {
         tracing::info!("start sync");
-        _ = app.sync().await.map_err(|err| {
+        _ = app.sync(full_refresh).await.map_err(|err| {
             tracing::error!(err = err.to_string(), "failed to sync");
         });
+        full_refresh = false;
         tokio::time::sleep(std::time::Duration::from_secs(60)).await;
     }
 }
