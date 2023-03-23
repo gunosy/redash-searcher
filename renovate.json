@@ -1,0 +1,41 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "patch": {
+    "automerge": true
+  },
+  "packageRules": [
+    {
+      "groupName": "Cargo",
+      "matchDatasources": [
+        "crates"
+      ],
+      "separateMinorPatch": true,
+      "patch": {
+        "automerge": true
+      }
+    },
+    {
+      "groupName": "npm",
+      "matchDatasources": [
+        "npm"
+      ],
+      "separateMinorPatch": true,
+      "patch": {
+        "automerge": true
+      }
+    },
+    {
+      "groupName": "githubActions",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "separateMinorPatch": true,
+      "patch": {
+        "automerge": true
+      }
+    }
+  ]
+}
