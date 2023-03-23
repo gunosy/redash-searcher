@@ -77,7 +77,19 @@ const client = Client({
         field: "_score",
         order: "desc",
       },
-    },
+      created_at_desc: {
+        field: 'created_at',
+        order: 'desc'
+      },
+      updated_at_desc: {
+        field: 'updated_at',
+        order: 'desc'
+      },
+      retrieved_at_desc: {
+        field: 'retrieved_at',
+        order: 'desc'
+      },
+    }
   },
 });
 
