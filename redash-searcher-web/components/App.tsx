@@ -9,6 +9,7 @@ import {
   Stats,
   InfiniteHits,
   InstantSearchProps,
+  SortBy,
 } from "react-instantsearch-dom";
 import Hit from "../components/Hit";
 
@@ -42,6 +43,22 @@ export default function App(props: InstantSearchProps) {
               <h1>Redash Searcher</h1>
             </EuiTitle>
             <EuiHorizontalRule margin="m" />
+            <EuiTitle size="xs">
+              <h4>Sorted By</h4>
+            </EuiTitle>
+            <SortBy
+              defaultRefinement="default"
+              items={[
+                { label: "Relevance", value: "default" },
+                { label: "Created At (desc)", value: "created_at_desc" },
+                { label: "Updated At (desc)", value: "updated_at_desc" },
+                {
+                  label: "Last Retrieved At (desc)",
+                  value: "retrieved_at_desc",
+                },
+              ]}
+            />
+            <EuiHorizontalRule margin="xs" />
             <EuiTitle size="xs">
               <h4>Data Source</h4>
             </EuiTitle>
