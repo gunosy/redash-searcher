@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.2.6](https://github.com/gunosy/redash-searcher/compare/v0.2.5...v0.2.6) - 2023-03-23
+- fix: add retrieved_at to openserach fields by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/36
+- fix(deps): update npm (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/38
+- fix(deps): update rust crate anyhow to 1.0.70 by @renovate in https://github.com/gunosy/redash-searcher/pull/39
+- feat: add sorted by selector by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/41
+
 ## [v0.2.5](https://github.com/gunosy/redash-searcher/compare/v0.2.4...v0.2.5) - 2023-03-23
 - Add time filter for Redash query by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/33
 - chore: configure renovate by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/35
