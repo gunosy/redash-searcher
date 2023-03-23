@@ -32,6 +32,7 @@ pub struct RedashQuery {
     pub is_draft: bool,
     pub created_at: DateTime<Local>,
     pub updated_at: DateTime<Local>,
+    pub retrieved_at: Option<DateTime<Local>>,
     pub data_source_id: i32,
     pub tags: Vec<String>,
 }
