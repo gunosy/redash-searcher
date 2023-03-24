@@ -34,20 +34,19 @@ const Hit: React.FC<HitProps> = ({ hit }: HitProps) => {
         />
       }
       title={
-        <div>
-          <h2>
-            {hit.name}
-            <EuiButtonEmpty
-              iconType={"lensApp"}
-              href={`${REDASH_URL}/queries/${hit.id}/source`}
-              target="_blank"
-              style={{ margin: "0 8px" }}
-              contentProps={{ style: { padding: "0" } }}
-            >
-              Open Redash
-            </EuiButtonEmpty>
-          </h2>
-        </div>
+        <>
+          {hit.name}
+          <EuiButtonEmpty
+            aria-label="open-redash"
+            iconType={"lensApp"}
+            href={`${REDASH_URL}/queries/${hit.id}/source`}
+            target="_blank"
+            style={{ margin: "0 8px" }}
+            contentProps={{ style: { padding: "0" } }}
+          >
+            Open Redash
+          </EuiButtonEmpty>
+        </>
       }
       description={hit.description}
     >
