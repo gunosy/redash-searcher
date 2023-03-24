@@ -47,6 +47,7 @@ const HighlightQueryInner = ({ highlight, attribute, hit }: any) => {
       {isExpanded && (
         <EuiButtonIcon
           display="empty"
+          aria-label="collapse"
           iconType={"arrowUp"}
           onClick={() => setIsExpanded(!isExpanded)}
           style={{ margin: "10px auto", display: "block" }}
@@ -55,6 +56,7 @@ const HighlightQueryInner = ({ highlight, attribute, hit }: any) => {
       {!isExpanded && (
         <EuiButtonIcon
           display="empty"
+          aria-label="expand"
           iconType={"arrowDown"}
           onClick={() => setIsExpanded(!isExpanded)}
           style={{ margin: "10px auto", display: "block" }}
