@@ -119,10 +119,35 @@ impl App {
                     response = res.text().await.unwrap(),
                     "failed to create index"
                 );
-                panic!("failed to create index")
+                return Err(anyhow!("failed to create index"));
             } else {
                 tracing::info!(response = res.text().await.unwrap(), "create index success");
             }
+        }
+        Ok(())
+    }
+
+    pub async fn update_redash_index_mappings(&self) -> Result<()> {
+        let res = self
+            .open_search_client
+            .indices()
+            .put_mapping(opensearch::indices::IndicesPutMappingParts::Index(&[
+                REDASH_INDEX_NAME,
+            ]))
+            .body(INDEX_CONFIG["mappings"].clone())
+            .send()
+            .await?;
+        if !res.status_code().is_success() {
+            tracing::error!(
+                response = res.text().await.unwrap(),
+                "failed to update mappings"
+            );
+            return Err(anyhow!("failed to update mappings"));
+        } else {
+            tracing::info!(
+                response = res.text().await.unwrap(),
+                "update mappings success"
+            );
         }
         Ok(())
     }
