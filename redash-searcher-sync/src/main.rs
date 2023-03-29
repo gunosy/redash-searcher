@@ -69,6 +69,7 @@ async fn main() {
 
     let app = App::new(redash_client, client);
     app.create_redash_index_if_not_exists().await.unwrap();
+    app.update_redash_index_mappings().await.unwrap();
     let mut full_refresh = config.open_search.first_full_refresh;
     loop {
         tracing::info!("start sync");
