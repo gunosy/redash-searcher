@@ -1,5 +1,29 @@
 # Changelog
 
+## [v0.2.7](https://github.com/gunosy/redash-searcher/compare/v0.2.6...v0.2.7) - 2023-03-29
+- fix(deps): update rust crate async-trait to 0.1.67 by @renovate in https://github.com/gunosy/redash-searcher/pull/42
+- fix(deps): update rust crate chrono to 0.4.24 by @renovate in https://github.com/gunosy/redash-searcher/pull/43
+- fix(deps): update rust crate config to 0.13.3 by @renovate in https://github.com/gunosy/redash-searcher/pull/45
+- fix(deps): update rust crate once_cell to 1.17.1 by @renovate in https://github.com/gunosy/redash-searcher/pull/46
+- fix: fix warnings on console by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/47
+- fix(deps): update rust crate serde to 1.0.158 by @renovate in https://github.com/gunosy/redash-searcher/pull/48
+- fix(deps): update rust crate tonic to 0.8.3 by @renovate in https://github.com/gunosy/redash-searcher/pull/49
+- fix(deps): update rust crate tracing to 0.1.37 by @renovate in https://github.com/gunosy/redash-searcher/pull/50
+- fix(deps): update rust crate tracing-subscriber to 0.3.16 by @renovate in https://github.com/gunosy/redash-searcher/pull/51
+- chore(deps): update dependency @types/react to v18.0.29 by @renovate in https://github.com/gunosy/redash-searcher/pull/54
+- fix(deps): update rust crate async-trait to 0.1.68 by @renovate in https://github.com/gunosy/redash-searcher/pull/55
+- chore(deps): update dependency @types/react to v18.0.30 by @renovate in https://github.com/gunosy/redash-searcher/pull/61
+- fix(deps): update rust crate serde_json to 1.0.95 by @renovate in https://github.com/gunosy/redash-searcher/pull/62
+- fix(deps): update rust crate serde to 1.0.159 by @renovate in https://github.com/gunosy/redash-searcher/pull/64
+- docs: add architecture description by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/66
+- chore(deps): update dependency @types/react to v18.0.31 by @renovate in https://github.com/gunosy/redash-searcher/pull/65
+- Update OpenSearch mapping when starting up by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/67
+- fix(deps): update npm (minor) by @renovate in https://github.com/gunosy/redash-searcher/pull/58
+- chore(deps): update rust docker tag to v1.68.2 by @renovate in https://github.com/gunosy/redash-searcher/pull/57
+- chore(deps): update docker/build-push-action action to v4 by @renovate in https://github.com/gunosy/redash-searcher/pull/59
+- chore(deps): update node.js to v19.8 by @renovate in https://github.com/gunosy/redash-searcher/pull/52
+- fix(deps): update rust crate tokio to 1.27.0 by @renovate in https://github.com/gunosy/redash-searcher/pull/68
+
 ## [v0.2.6](https://github.com/gunosy/redash-searcher/compare/v0.2.5...v0.2.6) - 2023-03-23
 - fix: add retrieved_at to openserach fields by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/36
 - fix(deps): update npm (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/38
