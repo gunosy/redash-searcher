@@ -16,3 +16,32 @@ cp .env.sample .env.docker
 ```console
 docker compose up
 ```
+
+## Example Architecture to Deploy
+
+We provide a [Helm Chart](https://github.com/gunosy/public-helm-charts/tree/main/charts/redash-searcher) for this application.
+You can deploy this application to Kubernetes with the Helm Chart.
+
+> **NOTE**:
+> Redash and OpenSearch are required to deploy by yourself.
+
+The following diagram shows the architecture of the example deployment.
+
+```mermaid
+graph LR
+    subgraph "Kubernetes"
+        sync["Deployment: Sync Application (Rust)"]
+        ingress["Ingress"]
+        subgraph External Services
+            redash["Deployment: Redash API"]
+            opensearch["StatefulSet: Open Search"]
+        end
+        nextjs["Deployment: SSR Frontend App & API (Next.js)"]
+        ingress -->|Routes| nextjs
+        nextjs -->|API Calls| opensearch
+        sync -->|Sync Redash Queries| opensearch
+        sync -->|Fetch Items| redash
+    end
+    user["User Client"]
+    user -->|Access| ingress
+```
