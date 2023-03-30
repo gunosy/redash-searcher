@@ -1,6 +1,5 @@
 name: Post Workflows for Tag PR
-on:
-  pull_request
+on: pull_request
 
 concurrency:
   group: post-tagpr-${{ github.event.pull_request.number }}
@@ -40,6 +39,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: redash-searcher-sync
+          cache-on-failure: "true"
       - name: update Cargo.lock
         run: |
           cargo c
@@ -48,8 +48,8 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         id: auto-commit-action
         with:
-          commit_message: 'chore: update lock files'
-          file_pattern: 'redash-searcher-web/yarn.lock redash-searcher-sync/Cargo.lock'
+          commit_message: "chore: update lock files"
+          file_pattern: "redash-searcher-web/yarn.lock redash-searcher-sync/Cargo.lock"
       - name: check if commit was made
         if: steps.auto-commit-action.outputs.changes_detected == 'true'
         run: |
