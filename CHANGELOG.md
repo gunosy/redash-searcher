@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.2.8](https://github.com/gunosy/redash-searcher/compare/v0.2.7...v0.2.8) - 2023-03-30
+- remove index before full-refresh to update index mappings by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/69
+- chore: cache crates when workflow failed by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/71
+
 ## [v0.2.7](https://github.com/gunosy/redash-searcher/compare/v0.2.6...v0.2.7) - 2023-03-29
 - fix(deps): update rust crate async-trait to 0.1.67 by @renovate in https://github.com/gunosy/redash-searcher/pull/42
 - fix(deps): update rust crate chrono to 0.4.24 by @renovate in https://github.com/gunosy/redash-searcher/pull/43
