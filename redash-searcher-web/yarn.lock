@@ -649,19 +649,19 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"
   integrity sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==
 
-"@searchkit/api@4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@searchkit/api/-/api-4.4.1.tgz#72d8fdd85b51518e2e53374574ded6b3256071fc"
-  integrity sha512-EUxxN5Yu2yudUYQvgWZ7CiCAcdVNcs4xUjMiehyL8yWv5nCaMzeJNuAuaL1r+qQexWFAZwzmrUTjick5Gnv/Hg==
+"@searchkit/api@4.4.3":
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/@searchkit/api/-/api-4.4.3.tgz#9e419959cb43accb3a320c791e9cf462347ebd4d"
+  integrity sha512-f1TbtgarpHCNcfHC/06O6IZzbkV8DZHqvifX3UyFsjL5p7Xm+AGSlzKJmvJzDIMMs/YWI617Xec8GKWJj3ficw==
   dependencies:
-    searchkit "^4.4.1"
+    searchkit "^4.4.3"
 
-"@searchkit/instantsearch-client@4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@searchkit/instantsearch-client/-/instantsearch-client-4.4.1.tgz#a45fc28205da0e2ba3c71f3d09c37ca7ceb30a70"
-  integrity sha512-PCneCLZemLHyb0wWnztelu+t48JRz8sFcw9pSDbFJc1wO/3B3F/MsNkmhz09abKgDw8WFfPAwl2UbW8OoSpO6g==
+"@searchkit/instantsearch-client@4.4.3":
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/@searchkit/instantsearch-client/-/instantsearch-client-4.4.3.tgz#b1b795a9e22731dd1ba26610c92033bd363bddd8"
+  integrity sha512-DtvUK12A+h553MNWGa9imTxdh0JG0Ri4xGpcz6aisk/GjztusK+BQbQ3Uiat0mL1xAoeZA+bygRxuRB5ECJqJQ==
   dependencies:
-    searchkit "^4.4.1"
+    searchkit "^4.4.3"
 
 "@stencil/core@^2.3.0":
   version "2.22.3"
@@ -3139,10 +3139,10 @@ scheduler@^0.23.0:
   dependencies:
     loose-envify "^1.1.0"
 
-searchkit@4.4.1, searchkit@^4.4.1:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/searchkit/-/searchkit-4.4.1.tgz#314af4ad61863113f71de980589f1a9c4b587b25"
-  integrity sha512-8CTL6je34n/rTRopg162WSHJ6+XiJmnyF3KHoTvbr3uFtzBgAdkFF0lk7a3NW+iUtge9FvthbNxz9m44BkWPIA==
+searchkit@4.4.3, searchkit@^4.4.3:
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/searchkit/-/searchkit-4.4.3.tgz#a2e65d1aac189f9a9b4d3612bd4f8b80d855f9bc"
+  integrity sha512-4Xi+9CVqQG+TJqIWdNibRlk08fLPjwH9RawoEyHUmJ7dYrOa+4cR+0EoRxxI7S4nAgn9SaOPOBq1oxLpIIhqxA==
   dependencies:
     deepmerge "^4.2.2"
 
