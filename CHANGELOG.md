@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.2.9](https://github.com/gunosy/redash-searcher/compare/v0.2.8...v0.2.9) - 2023-04-14
+- chore(deps): update dependency @types/react to v18.0.32 by @renovate in https://github.com/gunosy/redash-searcher/pull/73
+- chore(deps): update dependency @types/react to v18.0.33 by @renovate in https://github.com/gunosy/redash-searcher/pull/75
+- fix(deps): update npm to v4.4.3 (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/76
+- chore(deps): update dependency @types/react to v18.0.34 by @renovate in https://github.com/gunosy/redash-searcher/pull/78
+- fix(deps): update rust crate serde to 1.0.160 by @renovate in https://github.com/gunosy/redash-searcher/pull/79
+- chore(deps): update dependency @types/react to v18.0.35 by @renovate in https://github.com/gunosy/redash-searcher/pull/81
+- fix(deps): update rust crate serde_json to 1.0.96 by @renovate in https://github.com/gunosy/redash-searcher/pull/82
+- support AND, OR () in query by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/83
+
 ## [v0.2.8](https://github.com/gunosy/redash-searcher/compare/v0.2.7...v0.2.8) - 2023-03-30
 - remove index before full-refresh to update index mappings by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/69
 - chore: cache crates when workflow failed by @hiro-o918 in https://github.com/gunosy/redash-searcher/pull/71
