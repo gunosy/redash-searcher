@@ -1,4 +1,12 @@
-import { EuiHorizontalRule, EuiPageTemplate, EuiTitle } from "@elastic/eui";
+import {
+  EuiCode,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiHorizontalRule,
+  EuiPageTemplate,
+  EuiTitle,
+  EuiToolTip,
+} from "@elastic/eui";
 import { DateRangePicker } from "@algolia/react-instantsearch-widget-date-range-picker";
 import React from "react";
 import {
@@ -98,7 +106,20 @@ export default function App(props: InstantSearchProps) {
             <RefinementList attribute="tags" searchable={true} limit={10} />
           </EuiPageTemplate.Sidebar>
           <EuiPageTemplate.Section>
-            <SearchBox />
+            <EuiFlexGroup gutterSize="s" alignItems="center">
+              <EuiFlexItem grow={true}>
+                <EuiToolTip
+                  content=<span>
+                    You can use <EuiCode>AND</EuiCode>, <EuiCode>OR</EuiCode>,
+                    and parentheses <EuiCode>()</EuiCode> in your search query
+                    to refine your search results. Separated by space,
+                    <EuiCode>AND</EuiCode> is the default.
+                  </span>
+                >
+                  <SearchBox />
+                </EuiToolTip>
+              </EuiFlexItem>
+            </EuiFlexGroup>
             <Stats />
             <div style={{ margin: "1rem 0" }}>
               <CurrentRefinements transformItems={reduceDuplicateRefinement} />
