@@ -8,6 +8,7 @@ use opensearch::{http::request::JsonBody, OpenSearch};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
+use crate::parser;
 use crate::redash::{self, RedashClient, RedashDataSource};
 
 const REDASH_INDEX_NAME: &str = "redash";
@@ -65,6 +66,7 @@ struct RedashDocument {
     id: i32,
     name: String,
     query: String,
+    references: Vec<String>,
     user_name: String,
     user_email: String,
     created_at: DateTime<Local>,
@@ -215,10 +217,12 @@ impl App {
         let mut oldest_updated_at = DateTime::<Local>::MAX_UTC;
         for query in res.results {
             let data_source = data_sources.get(&query.data_source_id).unwrap();
+            let tmp_query = query.query.clone();
             let doc = RedashDocument {
                 id: query.id,
                 name: query.name,
                 query: query.query,
+                references: parser::parse_references_from_query(tmp_query.as_str()),
                 user_name: query.user.name,
                 user_email: query.user.email,
                 created_at: query.created_at,
