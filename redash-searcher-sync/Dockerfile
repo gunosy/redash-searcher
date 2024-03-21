@@ -1,5 +1,5 @@
 # ref: https://dev.to/rogertorres/first-steps-with-docker-rust-30oi
-FROM rust:1.68.2-bullseye as build
+FROM rust:1.77.0-bullseye as build
 
 RUN USER=root cargo new --bin redash-searcher-sync
 WORKDIR /redash-searcher-sync
