@@ -9,20 +9,20 @@ jobs:
     if: startsWith(github.head_ref, 'tagpr-from-')
     permissions:
       contents: write
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
-      - uses: tibdex/github-app-token@v1
+      - uses: tibdex/github-app-token@v2
         id: github_app_token
         with:
           app_id: ${{ secrets.ORG_GITHUB_ACTIONS_APP_ID }}
           private_key: ${{ secrets.ORG_GITHUB_ACTIONS_APP_PRIVATE_KEY }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ steps.github_app_token.outputs.token }}
 
       # lock redash-searcher-web
       - name: Set Node.js 18.x
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18.x
           cache: yarn
@@ -45,7 +45,7 @@ jobs:
           cargo c
         working-directory: redash-searcher-sync
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v5
         id: auto-commit-action
         with:
           commit_message: "chore: update lock files"
