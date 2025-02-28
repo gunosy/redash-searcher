@@ -13,7 +13,7 @@ services:
       - redash-searcher
 
   opensearch-node-main:
-    image: opensearchproject/opensearch:2.4.1
+    image: opensearchproject/opensearch:2.19.1
     environment:
       - cluster.name=local-cluster
       - node.name=main
