@@ -2,7 +2,7 @@
 name = "redash-searcher-sync"
 
 edition = "2021"
-version = "0.2.9"
+version = "0.2.10"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
