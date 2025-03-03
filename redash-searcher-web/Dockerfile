@@ -1,7 +1,7 @@
 # ref: https://github.com/vercel/next.js/blob/f7b654e875f474882913a8bd8eee3969e97101d7/examples/with-docker/Dockerfile
 
 # Install dependencies only when needed
-FROM node:19.8-bullseye-slim AS deps
+FROM node:19.9-bullseye-slim AS deps
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ RUN \
 
 
 # Rebuild the source code only when needed
-FROM node:19.8-bullseye-slim AS builder
+FROM node:19.9-bullseye-slim AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -35,7 +35,7 @@ RUN yarn build
 # RUN npm run build
 
 # Production image, copy all the files and run next
-FROM node:19.8-bullseye-slim AS runner
+FROM node:19.9-bullseye-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
