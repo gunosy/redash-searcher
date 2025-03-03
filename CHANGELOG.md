@@ -1,5 +1,83 @@
 # Changelog
 
+## [v0.2.10](https://github.com/gunosy/redash-searcher/compare/v0.2.9...v0.2.10) - 2025-03-03
+- chore(deps): update dependency @types/react to v18.0.37 by @renovate in https://github.com/gunosy/redash-searcher/pull/84
+- chore(deps): update dependency @types/jest to v29.5.1 by @renovate in https://github.com/gunosy/redash-searcher/pull/86
+- chore(deps): update dependency @types/node to v18.15.12 by @renovate in https://github.com/gunosy/redash-searcher/pull/87
+- chore(deps): update dependency @types/node to v18.15.13 by @renovate in https://github.com/gunosy/redash-searcher/pull/90
+- chore(deps): update dependency @types/react to v18.0.38 by @renovate in https://github.com/gunosy/redash-searcher/pull/91
+- fix(deps): update rust crate tracing-subscriber to 0.3.17 by @renovate in https://github.com/gunosy/redash-searcher/pull/92
+- fix(deps): update rust crate tracing to 0.1.38 by @renovate in https://github.com/gunosy/redash-searcher/pull/93
+- fix(deps): update npm to v11.10.8 (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/94
+- fix(deps): update rust crate anyhow to 1.0.71 by @renovate in https://github.com/gunosy/redash-searcher/pull/95
+- fix(deps): update rust crate serde to 1.0.162 by @renovate in https://github.com/gunosy/redash-searcher/pull/96
+- fix(deps): update rust crate serde to 1.0.163 by @renovate in https://github.com/gunosy/redash-searcher/pull/97
+- fix(deps): update dependency qs to v6.11.2 by @renovate in https://github.com/gunosy/redash-searcher/pull/98
+- chore(deps): update npm (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/100
+- fix(deps): update cargo (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/101
+- fix(deps): update rust crate async-trait to 0.1.69 by @renovate in https://github.com/gunosy/redash-searcher/pull/102
+- fix(deps): update rust crate serde to 1.0.166 by @renovate in https://github.com/gunosy/redash-searcher/pull/103
+- fix(deps): update cargo (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/104
+- fix(deps): update rust crate async-trait to 0.1.71 by @renovate in https://github.com/gunosy/redash-searcher/pull/105
+- fix(deps): update rust crate serde to 1.0.167 by @renovate in https://github.com/gunosy/redash-searcher/pull/106
+- fix(deps): update rust crate serde to 1.0.169 by @renovate in https://github.com/gunosy/redash-searcher/pull/107
+- fix(deps): update rust crate serde to 1.0.170 by @renovate in https://github.com/gunosy/redash-searcher/pull/108
+- fix(deps): update rust crate serde to 1.0.171 by @renovate in https://github.com/gunosy/redash-searcher/pull/109
+- chore(deps): update dependency @types/jest to v29.5.3 by @renovate in https://github.com/gunosy/redash-searcher/pull/110
+- fix(deps): update rust crate serde_json to 1.0.102 by @renovate in https://github.com/gunosy/redash-searcher/pull/111
+- fix(deps): update cargo (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/112
+- fix(deps): update rust crate serde to 1.0.173 by @renovate in https://github.com/gunosy/redash-searcher/pull/113
+- fix(deps): update cargo (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/114
+- fix(deps): update rust crate serde to 1.0.175 by @renovate in https://github.com/gunosy/redash-searcher/pull/115
+- fix(deps): update cargo (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/116
+- fix(deps): update rust crate serde to 1.0.177 by @renovate in https://github.com/gunosy/redash-searcher/pull/117
+- fix(deps): update rust crate serde to 1.0.178 by @renovate in https://github.com/gunosy/redash-searcher/pull/118
+- fix(deps): update rust crate serde to 1.0.179 by @renovate in https://github.com/gunosy/redash-searcher/pull/119
+- fix(deps): update rust crate serde to 1.0.180 by @renovate in https://github.com/gunosy/redash-searcher/pull/120
+- fix(deps): update rust crate serde to 1.0.181 by @renovate in https://github.com/gunosy/redash-searcher/pull/121
+- fix(deps): update rust crate serde to 1.0.182 by @renovate in https://github.com/gunosy/redash-searcher/pull/122
+- fix(deps): update rust crate serde to 1.0.183 by @renovate in https://github.com/gunosy/redash-searcher/pull/123
+- fix(deps): update rust crate async-trait to 0.1.73 by @renovate in https://github.com/gunosy/redash-searcher/pull/124
+- fix(deps): update rust crate anyhow to 1.0.73 by @renovate in https://github.com/gunosy/redash-searcher/pull/125
+- fix(deps): update rust crate anyhow to 1.0.74 by @renovate in https://github.com/gunosy/redash-searcher/pull/126
+- fix(deps): update rust crate serde_json to 1.0.105 by @renovate in https://github.com/gunosy/redash-searcher/pull/127
+- fix(deps): update rust crate anyhow to 1.0.75 by @renovate in https://github.com/gunosy/redash-searcher/pull/128
+- fix(deps): update rust crate serde to 1.0.185 by @renovate in https://github.com/gunosy/redash-searcher/pull/129
+- chore(deps): update dependency @types/jest to v29.5.4 by @renovate in https://github.com/gunosy/redash-searcher/pull/130
+- fix(deps): update rust crate serde to 1.0.186 by @renovate in https://github.com/gunosy/redash-searcher/pull/131
+- fix(deps): update rust crate serde to 1.0.187 by @renovate in https://github.com/gunosy/redash-searcher/pull/132
+- fix(deps): update rust crate serde to 1.0.188 by @renovate in https://github.com/gunosy/redash-searcher/pull/133
+- fix(deps): update rust crate chrono to 0.4.27 by @renovate in https://github.com/gunosy/redash-searcher/pull/134
+- chore(deps): update dependency @types/qs to v6.9.8 by @renovate in https://github.com/gunosy/redash-searcher/pull/135
+- fix(deps): update rust crate chrono to 0.4.28 by @renovate in https://github.com/gunosy/redash-searcher/pull/136
+- fix(deps): update rust crate chrono to 0.4.29 by @renovate in https://github.com/gunosy/redash-searcher/pull/139
+- fix(deps): update rust crate chrono to 0.4.30 by @renovate in https://github.com/gunosy/redash-searcher/pull/140
+- fix(deps): update rust crate serde_json to 1.0.106 by @renovate in https://github.com/gunosy/redash-searcher/pull/141
+- fix(deps): update rust crate serde_json to 1.0.107 by @renovate in https://github.com/gunosy/redash-searcher/pull/142
+- fix(deps): update rust crate chrono to 0.4.31 by @renovate in https://github.com/gunosy/redash-searcher/pull/143
+- chore(deps): update dependency @types/jest to v29.5.5 by @renovate in https://github.com/gunosy/redash-searcher/pull/144
+- chore(deps): update dependency @types/react-instantsearch-dom to v6.12.4 by @renovate in https://github.com/gunosy/redash-searcher/pull/145
+- fix(deps): update rust crate serde to 1.0.189 by @renovate in https://github.com/gunosy/redash-searcher/pull/146
+- fix(deps): update rust crate tracing to 0.1.39 by @renovate in https://github.com/gunosy/redash-searcher/pull/147
+- fix(deps): update rust crate async-trait to 0.1.74 by @renovate in https://github.com/gunosy/redash-searcher/pull/148
+- chore(deps): update dependency @types/jest to v29.5.6 by @renovate in https://github.com/gunosy/redash-searcher/pull/149
+- chore(deps): update dependency @types/qs to v6.9.9 by @renovate in https://github.com/gunosy/redash-searcher/pull/150
+- chore(deps): update dependency @types/react-instantsearch-dom to v6.12.5 by @renovate in https://github.com/gunosy/redash-searcher/pull/151
+- fix(deps): update rust crate tracing to 0.1.40 by @renovate in https://github.com/gunosy/redash-searcher/pull/152
+- fix(deps): update rust crate serde to 1.0.190 by @renovate in https://github.com/gunosy/redash-searcher/pull/154
+- fix(deps): update rust crate serde_json to 1.0.108 by @renovate in https://github.com/gunosy/redash-searcher/pull/155
+- chore(deps): update dependency @types/jest to v29.5.7 by @renovate in https://github.com/gunosy/redash-searcher/pull/156
+- fix(deps): update rust crate serde to 1.0.191 by @renovate in https://github.com/gunosy/redash-searcher/pull/157
+- fix(deps): update rust crate serde to 1.0.192 by @renovate in https://github.com/gunosy/redash-searcher/pull/158
+- chore(deps): update npm (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/159
+- chore(deps): update dependency @types/jest to v29.5.8 by @renovate in https://github.com/gunosy/redash-searcher/pull/160
+- fix(deps): update rust crate tracing-subscriber to 0.3.18 by @renovate in https://github.com/gunosy/redash-searcher/pull/161
+- chore(deps): update dependency @types/jest to v29.5.10 by @renovate in https://github.com/gunosy/redash-searcher/pull/163
+- fix(deps): update cargo (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/164
+- chore(deps): update npm (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/169
+- fix(deps): update cargo (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/170
+- fix(deps): update cargo (patch) by @renovate in https://github.com/gunosy/redash-searcher/pull/172
+
 ## [v0.2.9](https://github.com/gunosy/redash-searcher/compare/v0.2.8...v0.2.9) - 2023-04-14
 - chore(deps): update dependency @types/react to v18.0.32 by @renovate in https://github.com/gunosy/redash-searcher/pull/73
 - chore(deps): update dependency @types/react to v18.0.33 by @renovate in https://github.com/gunosy/redash-searcher/pull/75
